@@ -1,5 +1,6 @@
 import { handelTogglePanel, insertComponent, insertMenuPanel, insertToggleIconMenu } from './init';
 import handleNavigate from './navigate';
+import { handleChangeViewPanel, handleToggleMenuSwitcherIcon } from './panels/panel';
 
 (() => {
   new MutationObserver(async (mutationsList, observer) => {
@@ -12,8 +13,10 @@ import handleNavigate from './navigate';
       await insertComponent();
 
       insertMenuPanel();
+      handleToggleMenuSwitcherIcon()
       handelTogglePanel();
       handleNavigate();
+      handleChangeViewPanel();
       observer.disconnect();
     }
   }).observe(document, { childList: true, subtree: true });

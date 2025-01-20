@@ -34,7 +34,7 @@
       <div class="ytp-menuitem-content"><div class="ytp-menuitem-toggle-checkbox"></div></div>
     </div>
   </h3>
-  <div class="tunkit_content">
+  <div class="tunkit_content" style="opacity: 0.5">
     <div class="tunkit_panel panel_template">
       <div class="tunkit_header">
         <div data-tunkit-panel="main" data-tunkit-type="tunkit_panel_active">
@@ -78,19 +78,20 @@
     </div>
     <div class="tunkit_panel panel_main tunkit_panel_active">
       <div class="tunkit_header" style="justify-content: space-evenly">
-        <!-- <div style="visibility: hidden; opacity: 0">
-              <button class="ytp-button ytp-panel-back-button" aria-label="Back to previous menu"></button><span>Back</span>
-            </div> -->
-        <div class="tunkit-center-column tunkit_disable" id="tunkit-create-message-timeline-btn">
+        <div
+          class="tunkit-center-column tunkit_disable_for_template"
+          data-tunkit-panel="create_message_timeline"
+          id="tunkit-create-message-timeline-btn"
+        >
           <img src="{{icon.text}}" />
         </div>
-        <div class="tunkit-center-column tunkit_disable" id="tunkit-create-flashcard-timeline-btn">
+        <div class="tunkit-center-column tunkit_disable_for_template" id="tunkit-create-flashcard-timeline-btn">
           <img src="{{icon.flashcard}}" />
         </div>
-        <div class="tunkit-center-column tunkit_disable" id="tunkit-create-typing-timeline-btn">
+        <div class="tunkit-center-column tunkit_disable_for_template" id="tunkit-create-typing-timeline-btn">
           <img src="{{icon.keyboard}}" />
         </div>
-        <div class="tunkit-center-column tunkit_disable" id="tunkit-create-pinter-timeline-btn">
+        <div class="tunkit-center-column tunkit_disable_for_template" id="tunkit-create-pinter-timeline-btn">
           <img src="{{icon.pointer}}" />
         </div>
       </div>
@@ -109,7 +110,7 @@
         </div>
       </div>
       <div
-        class="ytp-menuitem tunkit_disable"
+        class="ytp-menuitem tunkit_disable_for_template"
         data-tunkit-panel="note"
         data-tunkit-type="tunkit_panel_active"
         aria-haspopup="true"
@@ -123,7 +124,7 @@
         </div>
       </div>
       <div
-        class="ytp-menuitem"
+        class="ytp-menuitem tunkit_disable_for_template"
         data-tunkit-type="tunkit_panel_active"
         data-tunkit-panel="mode"
         aria-haspopup="true"
@@ -137,7 +138,7 @@
         </div>
       </div>
       <div
-        class="ytp-menuitem"
+        class="ytp-menuitem tunkit_disable_for_template"
         data-tunkit-type="tunkit_panel_active"
         data-tunkit-panel="track"
         aria-haspopup="true"

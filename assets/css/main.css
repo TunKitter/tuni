@@ -15,8 +15,7 @@
   align-items: center;
 }
 
-.tunkit_panel,
-.hidden_panel_handle {
+.tunkit_panel {
   display: none;
 }
 
@@ -144,11 +143,8 @@
   flex-direction: column;
   align-items: center;
 }
-.tunkit_disable {
+.tunkit_disable_for_template {
   opacity: 0.5;
-}
-.tunkit_enable {
-  opacity: 1;
 }
 .tunkit_subtitles_author {
   display: flex;
