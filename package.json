@@ -1,0 +1,20 @@
+{
+  "name": "timenote_youtube_v4",
+  "version": "1.0.0",
+  "main": "background.js",
+  "scripts": {
+    "build": "tsc && webpack --mode production",
+    "clear": "rmdir /s /q dist\\src\\",
+    "bundle_html": "node .\\dev\\bundle_html.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/chrome": "^0.0.287",
+    "typescript": "^5.7.2",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1"
+  }
+}
