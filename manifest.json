@@ -17,7 +17,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["/assets/icons/*"],
+      "resources": ["/assets/icons/*", "/assets/static/bundle.html"],
       "matches": ["https://www.youtube.com/*"]
     }
   ]

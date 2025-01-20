@@ -1,0 +1,155 @@
+<div class="ytp-popup ytp-settings-menu tunkit_panel_wrapper" data-layer="6">
+  <h3 class="tunkit_title">
+    <span style="float: right; padding-right: 1em"><img src="{{icon.setting}}" alt="" /> </span>
+    <span style="float: right; padding-right: 1em" class="tunkit-center-column">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"
+        />
+      </svg>
+      <sup class="tunkit-pro-badge" style="font-size: 0.7em">PRO</sup>
+    </span>
+    <div class="tunkit-go-pro-div">GO PRO</div>
+    <br />
+    <div
+      class="ytp-menuitem ytp-drc-menu-item"
+      role="menuitemcheckbox"
+      aria-checked="false"
+      tabindex="0"
+      id="tunkit_toggle_interactive_video"
+    >
+      <div class="ytp-menuitem-icon">
+        <svg height="24" viewBox="0 0 24 24" width="24">
+          <path
+            d="M7 13H5v-2h2v2zm3-4H8v6h2V9zm3-3h-2v12h2V6zm3 2h-2v8h2V8zm3 2h-2v4h2v-4zm-7-7c-4.96 0-9 4.04-9 9s4.04 9 9 9 9-4.04 9-9-4.04-9-9-9m0-1c5.52 0 10 4.48 10 10s-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z"
+            fill="white"
+          ></path>
+        </svg>
+      </div>
+      <div class="ytp-menuitem-label">Interactive Video</div>
+      <div class="ytp-menuitem-content"><div class="ytp-menuitem-toggle-checkbox"></div></div>
+    </div>
+  </h3>
+  <div class="tunkit_content">
+    <div class="tunkit_panel panel_template">
+      <div class="tunkit_header">
+        <div data-tunkit-panel="main" data-tunkit-type="tunkit_panel_active">
+          <button class="ytp-button ytp-panel-back-button" aria-label="Back to previous menu"></button><span>Back</span>
+        </div>
+      </div>
+      <div class="tunkit_body_subtitles">
+        <button
+          class="create_new_template_btn yt-spec-button-shape-next yt-spec-button-shape-next--filled yt-spec-button-shape-next--mono yt-spec-button-shape-next--size-m"
+          style="margin: 0 auto; margin-bottom: 1em"
+        >
+          Create new template
+        </button>
+        <div class="tunkit_template_wrapper"></div>
+        <div id="tunkit_loader" class="loader_template" style="margin: 10px auto"></div>
+      </div>
+    </div>
+    <div class="tunkit_panel panel_note">
+      <div class="tunkit_header">
+        <div data-tunkit-panel="main" data-tunkit-type="tunkit_panel_active">
+          <button class="ytp-button ytp-panel-back-button" aria-label="Back to previous menu"></button><span>Back</span>
+        </div>
+      </div>
+      <div class="tunkit_body_note"></div>
+      <div id="tunkit_loader" class="loader_note" style="margin: 10px auto"></div>
+    </div>
+    <div class="tunkit_panel panel_track">
+      <div class="tunkit_header">
+        <div data-tunkit-panel="main" data-tunkit-type="tunkit_panel_active">
+          <button class="ytp-button ytp-panel-back-button" aria-label="Back to previous menu"></button><span>Back</span>
+        </div>
+      </div>
+      <div class="tunkit_body_track">
+        <div class="tunkit_track_score">0/0</div>
+        <div class="tunkit_segment_track_wrapper">
+          <div class="tunkit_segment_correct"></div>
+          <div class="tunkit_segment_incorrect"></div>
+        </div>
+        <div class="tunkit_track_note_wrapper"></div>
+      </div>
+    </div>
+    <div class="tunkit_panel panel_main tunkit_panel_active">
+      <div class="tunkit_header" style="justify-content: space-evenly">
+        <!-- <div style="visibility: hidden; opacity: 0">
+              <button class="ytp-button ytp-panel-back-button" aria-label="Back to previous menu"></button><span>Back</span>
+            </div> -->
+        <div class="tunkit-center-column tunkit_disable" id="tunkit-create-message-timeline-btn">
+          <img src="{{icon.text}}" />
+        </div>
+        <div class="tunkit-center-column tunkit_disable" id="tunkit-create-flashcard-timeline-btn">
+          <img src="{{icon.flashcard}}" />
+        </div>
+        <div class="tunkit-center-column tunkit_disable" id="tunkit-create-typing-timeline-btn">
+          <img src="{{icon.keyboard}}" />
+        </div>
+        <div class="tunkit-center-column tunkit_disable" id="tunkit-create-pinter-timeline-btn">
+          <img src="{{icon.pointer}}" />
+        </div>
+      </div>
+      <div
+        class="ytp-menuitem"
+        data-tunkit-panel="template"
+        data-tunkit-type="tunkit_panel_active"
+        aria-haspopup="true"
+        role="menuitem"
+        tabindex="0"
+      >
+        <div class="ytp-menuitem-icon"><img src="{{icon.subtitles}}" /></div>
+        <div class="ytp-menuitem-label">Templates</div>
+        <div class="ytp-menuitem-content">
+          <div><span class="tunkit_current_template">Off</span> <span class="ytp-menu-label-secondary"></span></div>
+        </div>
+      </div>
+      <div
+        class="ytp-menuitem tunkit_disable"
+        data-tunkit-panel="note"
+        data-tunkit-type="tunkit_panel_active"
+        aria-haspopup="true"
+        role="menuitem"
+        tabindex="0"
+      >
+        <div class="ytp-menuitem-icon"><img src="{{icon.subtitles}}" /></div>
+        <div class="ytp-menuitem-label">Timeline note</div>
+        <div class="ytp-menuitem-content">
+          <div><span class="tunkit_total_notes">Off</span> <span class="ytp-menu-label-secondary"></span></div>
+        </div>
+      </div>
+      <div
+        class="ytp-menuitem"
+        data-tunkit-type="tunkit_panel_active"
+        data-tunkit-panel="mode"
+        aria-haspopup="true"
+        role="menuitem"
+        tabindex="0"
+      >
+        <div class="ytp-menuitem-icon"><img src="{{icon.subtitles}}" /></div>
+        <div class="ytp-menuitem-label">Mode</div>
+        <div class="ytp-menuitem-content">
+          <div><span class="tunkit_current_subtitles">Off</span> <span class="ytp-menu-label-secondary"></span></div>
+        </div>
+      </div>
+      <div
+        class="ytp-menuitem"
+        data-tunkit-type="tunkit_panel_active"
+        data-tunkit-panel="track"
+        aria-haspopup="true"
+        role="menuitem"
+        tabindex="0"
+      >
+        <div class="ytp-menuitem-icon"><img src="{{icon.subtitles}}" /></div>
+        <div class="ytp-menuitem-label">Show your track</div>
+        <div class="ytp-menuitem-content" title="Choose subtitles first to enable audio track">
+          <div><span class="tunkit_current_audio">Off</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
