@@ -19,3 +19,8 @@ export function getCurrentYoutubeId(): string {
   if (youtubeID == null) throw new Error("Can't get youtubeID");
   return youtubeID;
 }
+export function getTitleYoutube() {
+  const title = document.querySelector('#title > h1 > yt-formatted-string')?.textContent;
+  if (title == undefined) throw new Error("Can't get youtube title");
+  return title;
+}
