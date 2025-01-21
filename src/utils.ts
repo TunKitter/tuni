@@ -10,3 +10,12 @@ export function getComponent(query: string, is_remove: boolean = true): HTMLElem
   if (is_remove == true) element.remove();
   return copy;
 }
+export function randomString() {
+  //@ts-ignore
+  return '_' + (Date.now() + Math.random() + 1).toString(36).replaceAll('.', '');
+}
+export function getCurrentYoutubeId(): string {
+  const youtubeID = new URLSearchParams(window.location.search).get('v');
+  if (youtubeID == null) throw new Error("Can't get youtubeID");
+  return youtubeID;
+}

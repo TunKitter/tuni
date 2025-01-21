@@ -23,7 +23,9 @@ export function handleChangeViewPanel() {
       }
       case 'template': {
         show();
+        if (_.IS_GET_TEMPLATE) break;
         handleLoadTemplate();
+        _.IS_GET_TEMPLATE = true;
         break;
       }
       case 'create_message_timeline': {

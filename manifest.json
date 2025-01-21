@@ -3,7 +3,11 @@
   "name": "Interactive Youtube",
   "description": "Learning,interact,take note with youtube video and so more powerful features",
   "version": "1.0",
-  "permissions": ["scripting"],
+  "permissions": ["scripting", "storage"],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
   "host_permissions": ["https://www.youtube.com/watch?v=*"],
   "background": {
     "service_worker": "background.js",
