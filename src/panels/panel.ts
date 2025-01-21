@@ -65,3 +65,7 @@ export function setDisableItems(wrapper: HTMLElement, class_name: string, is_rem
     element.style.opacity = is_remove ? '0.5' : '1';
   });
 }
+export function setCurrentTemplate(text: string) {
+  //@ts-ignore
+  _.PANEL_WRAPPER?.querySelector('.tunkit_current_template').textContent = text;
+}

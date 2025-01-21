@@ -4,6 +4,7 @@ import Template from '../models/Template';
 import { TemplateType } from '../types';
 import { getComponent, getCurrentYoutubeId } from '../utils';
 import _ from '../variables';
+import { setCurrentTemplate, setDisableItems, showPanel } from './panel';
 
 export async function handleLoadTemplate() {
   const loader = _.PANEL_WRAPPER?.querySelector('#tunkit_loader.loader_template') as HTMLElement;
@@ -111,12 +112,17 @@ function handleClickDetailTemplate(key: string, template_component: any, templat
           if (data.status == 'success') {
             template_component.setName(template_dialog.getInputNameData());
             template_component.setDescription(template_dialog.getInputDescriptionData());
-            dialog_flow.removeOverlay();  
+            if (_.CURRENT_TEMPLATE_ID == key) setCurrentTemplate(template_dialog.getInputNameData());
+            dialog_flow.removeOverlay();
             dialog_flow.removeDialog();
           }
         });
     });
     template_dialog.onClickDelete(() => {
+      if (_.CURRENT_TEMPLATE_ID == key) {
+        alert('Please select another template before deleting');
+        return;
+      }
       if (confirm('Are you sure you want to delete this template?')) {
         Template.from(getCurrentYoutubeId())
           .remove(key)
@@ -129,6 +135,12 @@ function handleClickDetailTemplate(key: string, template_component: any, templat
           });
       }
     });
+  });
+  template_component.onClick(function () {
+    _.CURRENT_TEMPLATE_ID = key;
+    setCurrentTemplate(template_component.getName());
+    showPanel('.tunkit_panel.panel_main', 'tunkit_panel_active');
+    setDisableItems(_.PANEL_WRAPPER as HTMLElement, '.tunkit_disable_for_template', false);
   });
   template_component.render();
 }

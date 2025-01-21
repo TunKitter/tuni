@@ -7,6 +7,7 @@ const _ = {
   FULL_OVERLAY_WRAPPER: document.createElement('div'),
   FULL_OVERLAY: document.createElement('tp-yt-iron-overlay-backdrop'),
   DIALOG_WRAPPER: document.createElement('div'),
+  CURRENT_TEMPLATE_ID: null as string | null,
 };
 
 export function initAfterInsertComponent() {
