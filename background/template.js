@@ -6,7 +6,11 @@ chrome.runtime.onMessage.addListener((message, sender, response) => {
         const data = await chrome.storage.local.get({ [youtubeIDKey]: false });
         if (data[youtubeIDKey] == false) response({});
         else if (data?.[youtubeIDKey]?.template == undefined) throw new Error('Not found the template');
-        else response(data[youtubeIDKey].template);
+        if (data[youtubeIDKey].title == '' || data[youtubeIDKey] == false) {
+          data[youtubeIDKey] = { template: {}, title: message.title };
+          await chrome.storage.local.set({ [youtubeIDKey]: data[youtubeIDKey] });
+        }
+        response(data[youtubeIDKey].template);
         break;
       }
       case 'GET_TEMPLATE': {

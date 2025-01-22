@@ -1,11 +1,12 @@
 import { OptionalTemplateType, TemplateType } from '../types';
-import { randomString } from '../utils';
+import { getTitleYoutube, randomString } from '../utils';
 
 export default class Template {
   static from(youtubeID: string) {
     return {
       getAll(): Promise<{ [key: string]: TemplateType }> {
-        return chrome.runtime.sendMessage({ type: 'GET_ALL_TEMPLATE', youtubeID });
+        const title = getTitleYoutube();
+        return chrome.runtime.sendMessage({ type: 'GET_ALL_TEMPLATE', youtubeID, title });
       },
       get(id: string): Promise<TemplateType> {
         return chrome.runtime.sendMessage({ type: 'GET_TEMPLATE', youtubeID, id });

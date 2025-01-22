@@ -14,11 +14,11 @@ import { handleCreateTemplatePanel } from './panels/panel_template';
       await insertComponent();
 
       insertMenuPanel();
-      handleToggleMenuSwitcherIcon()
+      handleToggleMenuSwitcherIcon();
       handelTogglePanel();
       handleChangeViewPanel();
 
-      handleCreateTemplatePanel()
+      handleCreateTemplatePanel();
       handleNavigate();
       observer.disconnect();
     }
