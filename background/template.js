@@ -23,6 +23,9 @@ chrome.runtime.onMessage.addListener((message, sender, response) => {
       case 'INSERT_TEMPLATE': {
         const templates = await chrome.storage.local.get({ [youtubeIDKey]: { template: {}, title: '' } });
         templates[youtubeIDKey].template[message.id] = message.data;
+        const _now = Date.now();
+        templates[youtubeIDKey].template[message.id].created_at = _now;
+        templates[youtubeIDKey].template[message.id].updated_at = _now;
         const result = await chrome.storage.local.set({ [youtubeIDKey]: templates[youtubeIDKey] });
         response({ status: result == undefined ? 'success' : 'failed' });
         break;
@@ -34,6 +37,7 @@ chrome.runtime.onMessage.addListener((message, sender, response) => {
         Object.keys(message.data).forEach(e => {
           templates[youtubeIDKey].template[message.id][e] = message.data[e];
         });
+        templates[youtubeIDKey].template[message.id].updated_at = Date.now();
         const result = await chrome.storage.local.set({ [youtubeIDKey]: templates[youtubeIDKey] });
         response({ status: result == undefined ? 'success' : 'failed' });
         break;
