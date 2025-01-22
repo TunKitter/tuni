@@ -49,3 +49,6 @@ export function insertAdjacentElement(wrapper: HTMLElement, element: HTMLElement
   if (adjElement == null) throw new Error('The element does not exists');
   adjElement.insertAdjacentElement('afterend', element);
 }
+export function getTimelineTextFormat(start: number, end: number) {
+  return `${secondsToHms(String(start))} — ${secondsToHms(String(end))}`;
+}

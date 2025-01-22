@@ -11,42 +11,29 @@ export async function handleLoadTemplate() {
   loader.style.display = 'block';
   _.TEMPLATE_PANEL_WRAPPER!.innerHTML = '';
   const templates = await Template.from(getCurrentYoutubeId()).getAll();
+  _.TIMELINE_NOTE = templates;
   Object.keys(templates).forEach((key: string) => {
     const template_component = getTemplateItemComponent();
-    handleClickDetailTemplate(key, template_component, templates[key]);
+    template_component.setName(_.TIMELINE_NOTE[key].name);
+    template_component.setTotalNotes(Object.keys(_.TIMELINE_NOTE[key].timelineNotes).length);
+    handleClickDetailTemplate(key, template_component);
     template_component.render();
   });
   loader.style.display = 'none';
 }
 export function getTemplateItemComponent(): TemplateItemComponent {
-  const data: TemplateType = { name: '', timelineNotes: {}, description: '' };
   const template_component = getComponent('.tunkit_template_panel_item', false);
   const template_name = template_component.querySelector('.tunkit_template_panel_item_name')!;
   const template_total_notes = template_component.querySelector('.tunkit_template_panel_item_total_note')!;
-  function setNameView(name: string) {
-    template_name.textContent = name;
-  }
-  function setTotalNotesView() {
-    const note_len = Object.keys(data.timelineNotes).length;
-    template_total_notes.textContent = `${note_len} note${note_len > 1 ? 's' : ''}`;
-  }
   return {
     render() {
       _.TEMPLATE_PANEL_WRAPPER!.appendChild(template_component);
     },
-    getName: () => data.name,
-    getTimelineNotes: () => data.timelineNotes,
-    getDescription: () => data.description,
     setName(name: string) {
-      data.name = name;
-      setNameView(name);
+      template_name.textContent = name;
     },
-    setDescription(description: string) {
-      data.description = description;
-    },
-    setTimelineNote(timelineNotes: {}) {
-      data.timelineNotes = timelineNotes;
-      setTotalNotesView();
+    setTotalNotes(num: number) {
+      template_total_notes.textContent = `${num} note${num > 1 ? 's' : ''}`;
     },
     getElement: () => template_component,
     onClickDetail(callback: Function) {
@@ -66,8 +53,8 @@ export function handleCreateTemplatePanel() {
   //@ts-ignore
   _.PANEL_WRAPPER.querySelector('.create_new_template_btn').onclick = function () {
     const template_dialog = getTemplateDialogComponent();
-    DialogWithOverlayFlow(template_dialog.getElement(), {
-      close_selector: ['.tunkit_close_template', '.tunkit_save_template'],
+    const dialog_flow = DialogWithOverlayFlow(template_dialog.getElement(), {
+      close_selector: ['.tunkit_close_template'],
       overlay_z_index: 2201,
     });
     //@ts-ignore
@@ -75,15 +62,18 @@ export function handleCreateTemplatePanel() {
     template_dialog.getElement().querySelector('.tunkit_delete_template')!.remove();
     template_dialog.render();
     template_dialog.onClickSubmit(function () {
-      const name = template_dialog.getInputNameData();
-      const description = template_dialog.getInputDescriptionData();
+      const name = template_dialog.getName();
+      const description = template_dialog.getDescription();
       const payload = { name, description, timelineNotes: {} };
       Template.from(getCurrentYoutubeId())
         .insert(payload)
         .then(data => {
           if (data.status == 'success' && data.id) {
+            _.TIMELINE_NOTE[data.id] = payload;
             const template_component = getTemplateItemComponent();
-            handleClickDetailTemplate(data.id, template_component, payload);
+            template_component.setName(payload.name);
+            template_component.setTotalNotes(0);
+            handleClickDetailTemplate(data.id, template_component);
             template_component
               .getElement()
               .querySelector('.ytp-menuitem-label')!.innerHTML += ` <sup class="tunkit_new_template">new</sup>`;
@@ -95,35 +85,35 @@ export function handleCreateTemplatePanel() {
               { once: true }
             );
             _.TEMPLATE_PANEL_WRAPPER!.prepend(template_component.getElement());
+            dialog_flow.removeDialog();
+            dialog_flow.removeOverlay();
           }
         });
     });
   };
 }
-function handleClickDetailTemplate(key: string, template_component: TemplateItemComponent, templates: TemplateType) {
-  template_component.setName(templates.name);
-  template_component.setDescription(templates.description);
-  template_component.setTimelineNote(templates.timelineNotes);
+function handleClickDetailTemplate(key: string, template_component: TemplateItemComponent) {
   template_component.onClickDetail(function () {
     const template_dialog = getTemplateDialogComponent();
-    template_dialog.setName(template_component.getName());
-    template_dialog.setDescription(template_component.getDescription());
+    template_dialog.setName(_.TIMELINE_NOTE[key].name);
+    template_dialog.setDescription(_.TIMELINE_NOTE[key].description);
     template_dialog.render();
     const dialog_flow = DialogWithOverlayFlow(template_dialog.getElement(), {
-      close_selector: ['.tunkit_close_template', '.tunkit_save_template'],
+      close_selector: ['.tunkit_close_template'],
       overlay_z_index: 2201,
     });
     template_dialog.onClickSubmit(function () {
       Template.from(getCurrentYoutubeId())
         .update(key, {
-          name: template_dialog.getInputNameData(),
-          description: template_dialog.getInputDescriptionData(),
+          name: template_dialog.getName(),
+          description: template_dialog.getDescription(),
         })
         .then(data => {
           if (data.status == 'success') {
-            template_component.setName(template_dialog.getInputNameData());
-            template_component.setDescription(template_dialog.getInputDescriptionData());
-            if (_.CURRENT_TEMPLATE_ID == key) setCurrentTemplate(template_dialog.getInputNameData());
+            _.TIMELINE_NOTE[key].name = template_dialog.getName();
+            _.TIMELINE_NOTE[key].description = template_dialog.getDescription();
+            template_component.setName(template_dialog.getName());
+            if (_.CURRENT_TEMPLATE_ID == key) setCurrentTemplate(template_dialog.getName());
             dialog_flow.removeOverlay();
             dialog_flow.removeDialog();
           }
@@ -139,6 +129,7 @@ function handleClickDetailTemplate(key: string, template_component: TemplateItem
           .remove(key)
           .then(data => {
             if (data.status == 'success') {
+              delete _.TIMELINE_NOTE[key];
               dialog_flow.removeOverlay();
               dialog_flow.removeDialog();
               template_component.getElement().remove();
@@ -148,15 +139,17 @@ function handleClickDetailTemplate(key: string, template_component: TemplateItem
     });
   });
   template_component.onClick(function () {
-    _.PANEL_WRAPPER?.querySelector('.tunkit_template_panel_item_selected')?.classList?.remove(
+    if (_.CURRENT_TEMPLATE_ID == key) return;
+    _.CURRENT_TEMPLATE_ID = key;
+    _.TEMPLATE_PANEL_WRAPPER?.querySelector('.tunkit_template_panel_item_selected')?.classList?.remove(
       'tunkit_template_panel_item_selected'
     );
     template_component.getElement().classList.add('tunkit_template_panel_item_selected');
-    _.CURRENT_TEMPLATE_ID = key;
-    setCurrentTemplate(template_component.getName());
-    setCurrentTotalNotes(Object.keys(template_component.getTimelineNotes()).length);
+    setCurrentTemplate(_.TIMELINE_NOTE[key].name);
+    setCurrentTotalNotes(Object.keys(_.TIMELINE_NOTE[key].timelineNotes).length);
     showPanel('.tunkit_panel.panel_main', 'tunkit_panel_active');
     setDisableItems(_.PANEL_WRAPPER as HTMLElement, '.tunkit_disable_for_template', false);
-    _.CURRENT_TEMPLATE_PANEL_ITEM = template_component;
+    setCurrentTotalNotes(Object.keys(_.TIMELINE_NOTE[key].timelineNotes).length);
+    _.IS_GET_TIMELINE = false;
   });
 }

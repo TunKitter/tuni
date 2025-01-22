@@ -25,6 +25,15 @@
     Delete
   </button>
 </tp-yt-paper-dialog>
+<div class="input_form_wrapper action_wrapper">
+  <label>Action</label>
+  <div class="tunkit_action_wrapper">
+    <button class="tunkit_btn_action" id="tunkit_add_new_action"><span>+</span>Add new</button>
+  </div>
+</div>
+<button class="tunkit_btn_action tunkit_btn_action_item">
+  <img class="tunkit_btn_action_icon" src="" /><span class="tunkit_btn_action_name">No title</span>
+</button>
 <div class="tunkit_flex_center tunkit_close_icon_input_tags_wrapper">
   <svg
     class="w-6 h-6 text-gray-800 dark:text-white"
@@ -258,4 +267,85 @@
     <div class="ytp-menuitem-content">
         <div class="tunkit_align_center"><span class="ytp-menu-label-secondary timeline_panel_item_type"></span></span></div>
     </div>
+</div><div class="panel_timeline_message">
+  <div style="display: flex; flex-direction: column; gap: 5px">
+    <label>Message</label>
+    <textarea class="tunkit_textarea tunkit_timeline_message" cols="70" rows="10"></textarea>
+  </div>
 </div>
+<tp-yt-paper-dialog
+  class="style-scope ytd-popup-container tunkit_action tunkit_detail_timeline_note"
+  style="z-index: 2203; left: 500px"
+>
+  <img class="tunkit_close_action_button" src="{{icon.close}}" />
+  <h1 style="text-align: center">Update action</h1>
+  <div>
+    <label>Name</label>
+    <input class="tunkit_input tunkit_action_name" />
+  </div>
+  <div>
+    <label>Action type</label>
+    <select class="tunkit_select input_form_wrapper" id="tunkit_select_action_type">
+      <option value="notification">Notification</option>
+      <option value="jump_timeline">Jump to a timeline</option>
+      <option value="reference_note">Reference a note</option>
+      <option value="mark_correct">Mark correct</option>
+      <option value="mark_incorrect">Mark incorrect</option>
+    </select>
+  </div>
+  <div class="tunkit_panel panel_action_notification tunkit_action_active">
+    <div style="display: flex; flex-direction: column; gap: 5px">
+      <label>Message</label>
+      <textarea class="tunkit_textarea tunkit_action_notification_content" cols="70" rows="10"></textarea>
+    </div>
+  </div>
+  <div class="tunkit_panel panel_action_jump_timeline">
+    <input
+      class="tunkit_input tunkit_input_time tunkit_action_jump_timeline_content"
+      style="width: 100% !important"
+      placeholder="Enter the time"
+    />
+  </div>
+  <div class="tunkit_panel panel_action_reference_note"></div>
+  <div class="tunkit_panel panel_action_mark_correct"></div>
+  <div class="tunkit_panel panel_action_mark_incorrect"></div>
+  <button
+    class="save_action_button yt-spec-button-shape-next yt-spec-button-shape-next--filled yt-spec-button-shape-next--mono yt-spec-button-shape-next--size-m"
+    style="margin: 1em 1em 0 0; float: right; padding: 1em 3em"
+  >
+    Save
+  </button>
+  <button
+    class="delete_action_button yt-spec-button-shape-next yt-spec-button-shape-next--filled yt-spec-button-shape-next--mono yt-spec-button-shape-next--size-m"
+    style="margin: 1em; float: right; padding: 1em 3em; background: #434343; color: white"
+  >
+    Delete
+  </button>
+  <div class="hidden_panel_handle">
+    <div
+      id="tunkit_action_notification_hidden"
+      data-tunkit-type="tunkit_action_active"
+      data-tunkit-panel="action_notification"
+    ></div>
+    <div
+      id="tunkit_action_jump_timeline_hidden"
+      data-tunkit-type="tunkit_action_active"
+      data-tunkit-panel="action_jump_timeline"
+    ></div>
+    <div
+      id="tunkit_action_reference_note_hidden"
+      data-tunkit-type="tunkit_action_active"
+      data-tunkit-panel="action_reference_note"
+    ></div>
+    <div
+      id="tunkit_action_mark_correct_hidden"
+      data-tunkit-type="tunkit_action_active"
+      data-tunkit-panel="action_mark_correct"
+    ></div>
+    <div
+      id="tunkit_action_mark_incorrect_hidden"
+      data-tunkit-type="tunkit_action_active"
+      data-tunkit-panel="action_mark_incorrect"
+    ></div>
+  </div>
+</tp-yt-paper-dialog>

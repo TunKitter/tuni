@@ -1,12 +1,12 @@
 export type TemplateType = {
   name: string;
   description: string;
-  timelineNotes: {};
+  timelineNotes: { [key: string]: TimelineDataType };
 };
 export type OptionalTemplateType = {
   name?: string;
   description?: string;
-  timelineNotes?: {};
+  timelineNotes?: { [key: string]: TimelineDataType };
 };
 export type TimelineType = 'message' | 'flashcard' | 'typing' | 'pointer';
 export type TimelineDataType = {
@@ -36,13 +36,21 @@ export type ActionDataType = {
 };
 export type TemplateItemComponent = {
   render: () => void;
-  getName: () => string;
-  getDescription: () => string;
-  getTimelineNotes: () => { [key: string]: TimelineDataType };
   setName: (name: string) => void;
-  setDescription: (description: string) => void;
-  setTimelineNote: (timelineNotes: {}) => void;
+  setTotalNotes: (num: number) => void;
   getElement: () => HTMLElement;
   onClickDetail: (callback: () => void) => void;
   onClick: (callback: () => void) => void;
+};
+export type ActionType = 'notification' | 'jump_timeline' | 'reference_note' | 'mark_correct' | 'mark_incorrect';
+export type ActionButtonAdderItemType = {
+  getElement: () => HTMLElement;
+  onClick: (callback: Function) => void;
+  setName: (name: string) => void;
+  setIcon: (icon: ActionType) => void;
+};
+export type ActionButtonAdderComponentType = {
+  addNewAction: () => ActionButtonAdderItemType;
+  getElement: () => HTMLElement;
+  onAddNewAction: (callback: Function) => void;
 };

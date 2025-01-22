@@ -1,8 +1,12 @@
-import { getBaseTimelineDialog } from '../dialogs/base_timeline_dialog';
+import { getMessageTimelineDialog } from '../dialogs/message_timeline_dialog';
+import { ButtonAdderWithDialogActionFlow } from '../flows/button_adder_with_dialog';
 import { DialogWithOverlayFlow } from '../flows/dialog_with_overlay';
+import Timeline from '../models/Timeline';
+import { ActionDataType, TimelineDataType } from '../types';
+import { getCurrentYoutubeId, getTimelineTextFormat, randomString } from '../utils';
 import _ from '../variables';
 import { handleLoadTemplate } from './panel_template';
-import { handleLoadTimeline } from './panel_timeline';
+import { getTimelinePanelItem, handleClickTimelineItemPanel, handleLoadTimeline } from './panel_timeline';
 
 export function handleShowPanel(wrapper: HTMLElement, callback: Function | undefined = undefined) {
   wrapper.querySelectorAll('*[data-tunkit-panel]').forEach(element => {
@@ -89,13 +93,51 @@ export function setCurrentTotalNotes(notes_length: number | string) {
     typeof notes_length == 'number' ? `${notes_length} note${notes_length > 1 ? 's' : ''}` : notes_length;
 }
 function handleCreateMessageTimeline() {
-  const base_timeline_dialog = getBaseTimelineDialog();
-  base_timeline_dialog.setTitle('Create Message Timeline');
-  base_timeline_dialog.setStartTime(_.VIDEO!.currentTime);
-  base_timeline_dialog.setEndTime(_.VIDEO!.currentTime + 5);
-  DialogWithOverlayFlow(base_timeline_dialog.getElement(), {
-    close_selector: ['.tunkit_close_timeline', '.tunkit_save_timeline_btn'],
+  const message_timeline_dialog = getMessageTimelineDialog();
+  const dialog_flow = DialogWithOverlayFlow(message_timeline_dialog.BASE.getElement(), {
+    close_selector: ['.tunkit_close_timeline'],
     overlay_z_index: 2201,
   });
-  base_timeline_dialog.render();
+  message_timeline_dialog.BASE.setTitle('Create message timeline');
+  message_timeline_dialog.BASE.setStartTime(_.VIDEO!.currentTime);
+  message_timeline_dialog.BASE.setEndTime(_.VIDEO!.currentTime + 5);
+  message_timeline_dialog.BASE.getElement().querySelector('.delete_timeline_button')?.remove();
+  const temp_action = {} as {
+    [key: string]: ActionDataType;
+  };
+  ButtonAdderWithDialogActionFlow(temp_action, message_timeline_dialog);
+  message_timeline_dialog.render();
+  message_timeline_dialog.BASE.onClickSave(function () {
+    const payload: TimelineDataType = {
+      name: message_timeline_dialog.BASE.getName(),
+      startTime: message_timeline_dialog.BASE.getStartTime(),
+      endTime: message_timeline_dialog.BASE.getEndTime(),
+      tags: message_timeline_dialog.BASE.INPUT_TAG.getData(),
+      data: message_timeline_dialog.getDataTimeline(),
+      action: temp_action,
+      type: 'message',
+      timeline: getTimelineTextFormat(
+        message_timeline_dialog.BASE.getStartTime(),
+        message_timeline_dialog.BASE.getEndTime()
+      ),
+    };
+    Timeline.from(getCurrentYoutubeId())
+      .withTemplate(_.CURRENT_TEMPLATE_ID as string)
+      .insert(payload)
+      .then(data => {
+        if (data.status == 'success') {
+          _.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes[data.id] = payload;
+          const timeline_item = getTimelinePanelItem();
+          timeline_item.setTimelineText(payload.startTime, payload.endTime);
+          timeline_item.setName(payload.name);
+          timeline_item.setType(payload.type);
+          timeline_item.onClick(() => handleClickTimelineItemPanel(data.id, timeline_item));
+          timeline_item.render();
+          dialog_flow.removeDialog();
+          dialog_flow.removeOverlay();
+          _.IS_GET_TEMPLATE = false;
+          setCurrentTotalNotes(Object.keys(_.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes).length);
+        }
+      });
+  });
 }

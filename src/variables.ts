@@ -1,4 +1,4 @@
-import { TemplateItemComponent } from './types';
+import { TemplateType } from './types';
 import { getComponent } from './utils';
 
 const _ = {
@@ -11,7 +11,7 @@ const _ = {
   FULL_OVERLAY: document.createElement('tp-yt-iron-overlay-backdrop'),
   DIALOG_WRAPPER: document.createElement('div'),
   CURRENT_TEMPLATE_ID: null as string | null,
-  CURRENT_TEMPLATE_PANEL_ITEM: null as TemplateItemComponent | null,
+  TIMELINE_NOTE: {} as { [key: string]: TemplateType },
   VIDEO: null as HTMLVideoElement | null,
 };
 

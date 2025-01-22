@@ -16,10 +16,10 @@ import { handleCreateTemplatePanel } from './panels/panel_template';
       insertMenuPanel();
       handleToggleMenuSwitcherIcon()
       handelTogglePanel();
-      handleNavigate();
       handleChangeViewPanel();
 
       handleCreateTemplatePanel()
+      handleNavigate();
       observer.disconnect();
     }
   }).observe(document, { childList: true, subtree: true });

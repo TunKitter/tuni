@@ -6,7 +6,7 @@ export function getBaseTimelineDialog() {
   const dialog = getComponent('.tunkit_timeline_note.base_timeline_dialog', false) as HTMLElement;
   const input_tags = getInputTagsComponent();
   insertAdjacentElement(dialog, input_tags.getElement(), '.tunkit_base_info_wrapper');
-  const input_name = dialog.querySelector('#tunkit_timeline_note_name')! as HTMLInputElement;
+  const input_name = dialog.querySelector('.tunkit_timeline_note_name')! as HTMLInputElement;
   const input_start_time = dialog.querySelector('.tunkit_input_time.time_start')! as HTMLInputElement;
   const input_end_time = dialog.querySelector('.tunkit_input_time.time_end')! as HTMLInputElement;
   return {
