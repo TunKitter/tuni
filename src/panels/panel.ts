@@ -48,6 +48,11 @@ export function handleChangeViewPanel() {
         handleCreateMessageTimeline();
         break;
       }
+      case 'create_flashcard_timeline': {
+        if (!_.CURRENT_TEMPLATE_ID) return;
+        handleCreateFlashcardTimeline();
+        break;
+      }
     }
   });
 }
@@ -141,3 +146,4 @@ function handleCreateMessageTimeline() {
       });
   });
 }
+function handleCreateFlashcardTimeline() {}

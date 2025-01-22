@@ -58,11 +58,17 @@ function handleDataInteractiveData(type: ActionType, detailAction: HTMLElement, 
       break;
     }
     case 'jump_timeline': {
-      const input = detailAction.querySelector('.tunkit_action_jump_timeline_content') as HTMLInputElement;
-      if (typeof data !== 'number' && typeof data !== 'undefined')
+      const timeline_input = detailAction.querySelector('.tunkit_action_jump_timeline_content') as HTMLInputElement;
+      const timeline_message = detailAction.querySelector('.tunkit_jump_timeline_message') as HTMLTextAreaElement;
+      if (typeof data !== 'object' && typeof data !== 'undefined')
         throw new Error('Data must be string on Jump timeline action');
-      else if (typeof data === 'undefined') return HmsToSeconds(input.value);
-      input.value = secondsToHms(String(data));
+      else if (typeof data === 'undefined')
+        return {
+          message: timeline_message.value,
+          timeline: HmsToSeconds(timeline_input.value),
+        };
+      timeline_input.value = secondsToHms(String(data.timeline));
+      timeline_message.value = data.message;
       break;
     }
     case 'mark_correct':
