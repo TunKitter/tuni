@@ -24,3 +24,28 @@ export function getTitleYoutube() {
   if (title == undefined) throw new Error("Can't get youtube title");
   return title;
 }
+export function HmsToSeconds(text: string) {
+  let p = text.split(':');
+  if (p.length != 3) return parseInt(p[0]) * 60 + parseInt(p[1]);
+  return parseInt(p[0]) * 3600 + parseInt(p[1]) * 60 + parseInt(p[2]);
+}
+export function secondsToHms(d: string) {
+  let sec_num = parseInt(d, 10);
+  let hours: number | string = Math.floor(sec_num / 3600);
+  let minutes: number | string = Math.floor((sec_num - hours * 3600) / 60);
+  let seconds: number | string = sec_num - hours * 3600 - minutes * 60;
+  if (hours < 10) hours = '0' + hours + ':';
+  else hours = hours + ':';
+  if (minutes < 10) {
+    minutes = '0' + minutes;
+  }
+  if (seconds < 10) {
+    seconds = '0' + seconds;
+  }
+  return hours + minutes + ':' + seconds;
+}
+export function insertAdjacentElement(wrapper: HTMLElement, element: HTMLElement, query: string) {
+  const adjElement = wrapper.querySelector(query);
+  if (adjElement == null) throw new Error('The element does not exists');
+  adjElement.insertAdjacentElement('afterend', element);
+}

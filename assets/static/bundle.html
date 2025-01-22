@@ -1,3 +1,48 @@
+<tp-yt-paper-dialog
+  class="style-scope ytd-popup-container tunkit_timeline_note base_timeline_dialog"
+  style="max-width: 50em"
+>
+  <img class="tunkit_close_timeline" src="{{icon.close}}" />
+  <h1 style="text-align: center" id="tunkit_title_timeline">Update timeline note</h1>
+  <div class="tunkit_base_info_wrapper">
+    <label>Name</label>
+    <div style="display: flex; gap: 1em; align-items: center">
+      <input class="tunkit_input tunkit_timeline_note_name" />
+      <input class="tunkit_input tunkit_input_time time_start" placeholder="start" />
+      <span>—</span><input class="tunkit_input tunkit_input_time time_end" placeholder="end" />
+    </div>
+  </div>
+  <button
+    class="tunkit_save_timeline_btn yt-spec-button-shape-next yt-spec-button-shape-next--filled yt-spec-button-shape-next--mono yt-spec-button-shape-next--size-m"
+    style="margin: 1em 1em 0 0; float: right; padding: 1em 3em"
+  >
+    Save
+  </button>
+  <button
+    class="delete_timeline_button yt-spec-button-shape-next yt-spec-button-shape-next--filled yt-spec-button-shape-next--mono yt-spec-button-shape-next--size-m"
+    style="margin: 1em; float: right; padding: 1em 3em; background: #434343; color: white"
+  >
+    Delete
+  </button>
+</tp-yt-paper-dialog>
+<div class="tunkit_flex_center tunkit_close_icon_input_tags_wrapper">
+  <svg
+    class="w-6 h-6 text-gray-800 dark:text-white"
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    fill="none"
+    viewBox="0 0 24 24"
+  >
+    <path
+      stroke="#e1002d"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M6 18 17.94 6M18 18 6.06 6"
+    />
+  </svg>
+</div>
 <tp-yt-paper-dialog class="style-scope ytd-popup-container tunkit_template">
   <img class="tunkit_close_template" src="{{icon.close}}" />
   <h1 style="text-align: center" class="tunkit_title_template_dialog">Edit template</h1>
@@ -22,6 +67,23 @@
     Delete
   </button>
 </tp-yt-paper-dialog>
+<div class="tunkit_input_tags_wrapper">
+  <label for="tunkit_input_type_folder">Folder</label>
+  <div id="tunkit_select_folder_wrapper">
+    <ul id="tunkit_list_folder">
+      <li id="tunkit_input_type_folder_li">
+        <input list="folder_list" autocomplete="off" id="tunkit_input_type_folder" placeholder="Enter folder name" />
+      </li>
+    </ul>
+  </div>
+  <datalist id="folder_list">
+    <option value="Learning basic" />
+    <option value="Advanced" />
+    <option value="Reference" />
+    <option value="Learn later" />
+    <option value="Practice" />
+  </datalist>
+</div>
 <div class="ytp-popup ytp-settings-menu tunkit_panel_wrapper" data-layer="6">
   <h3 class="tunkit_title">
     <span style="float: right; padding-right: 1em"><img src="{{icon.setting}}" alt="" /> </span>
@@ -189,4 +251,11 @@
       ><span class="ytp-menu-label-secondary"><img class="tunkit_template_icon_detail" src="{{icon.info}}" /></span
     ></span>
   </div>
+</div>
+<div class="ytp-menuitem tunkit_timeline_panel_item" role="menuitem">
+    <div class="ytp-menuitem-icon timeline_panel_item_time_text"></div>
+    <div class="ytp-menuitem-label timeline_panel_item_name" style="flex-grow:1;max-width:150px"></div>
+    <div class="ytp-menuitem-content">
+        <div class="tunkit_align_center"><span class="ytp-menu-label-secondary timeline_panel_item_type"></span></span></div>
+    </div>
 </div>

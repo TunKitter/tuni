@@ -1,10 +1,10 @@
 import { getTemplateDialogComponent } from '../dialogs/template_dialog';
 import { DialogWithOverlayFlow } from '../flows/dialog_with_overlay';
 import Template from '../models/Template';
-import { TemplateType } from '../types';
+import { TemplateItemComponent, TemplateType } from '../types';
 import { getComponent, getCurrentYoutubeId } from '../utils';
 import _ from '../variables';
-import { setCurrentTemplate, setDisableItems, showPanel } from './panel';
+import { setCurrentTemplate, setCurrentTotalNotes, setDisableItems, showPanel } from './panel';
 
 export async function handleLoadTemplate() {
   const loader = _.PANEL_WRAPPER?.querySelector('#tunkit_loader.loader_template') as HTMLElement;
@@ -14,29 +14,29 @@ export async function handleLoadTemplate() {
   Object.keys(templates).forEach((key: string) => {
     const template_component = getTemplateItemComponent();
     handleClickDetailTemplate(key, template_component, templates[key]);
+    template_component.render();
   });
   loader.style.display = 'none';
 }
-export function getTemplateItemComponent() {
-  const data = { name: '', total_notes: 0, description: '' };
+export function getTemplateItemComponent(): TemplateItemComponent {
+  const data: TemplateType = { name: '', timelineNotes: {}, description: '' };
   const template_component = getComponent('.tunkit_template_panel_item', false);
   const template_name = template_component.querySelector('.tunkit_template_panel_item_name')!;
   const template_total_notes = template_component.querySelector('.tunkit_template_panel_item_total_note')!;
   function setNameView(name: string) {
     template_name.textContent = name;
   }
-  function setTotalNotesView(total_notes: number) {
-    template_total_notes.textContent = `${total_notes} note${total_notes > 1 ? 's' : ''}`;
+  function setTotalNotesView() {
+    const note_len = Object.keys(data.timelineNotes).length;
+    template_total_notes.textContent = `${note_len} note${note_len > 1 ? 's' : ''}`;
   }
   return {
     render() {
       _.TEMPLATE_PANEL_WRAPPER!.appendChild(template_component);
     },
     getName: () => data.name,
-    getTotalNotes: () => data.total_notes,
+    getTimelineNotes: () => data.timelineNotes,
     getDescription: () => data.description,
-    getNameInputData: () => template_name.textContent,
-    getTotalNotesInputData: () => template_total_notes.textContent,
     setName(name: string) {
       data.name = name;
       setNameView(name);
@@ -44,12 +44,12 @@ export function getTemplateItemComponent() {
     setDescription(description: string) {
       data.description = description;
     },
-    setTotalNotes(total_notes: number) {
-      data.total_notes = total_notes;
-      setTotalNotesView(total_notes);
+    setTimelineNote(timelineNotes: {}) {
+      data.timelineNotes = timelineNotes;
+      setTotalNotesView();
     },
     getElement: () => template_component,
-    onCLickDetail(callback: Function) {
+    onClickDetail(callback: Function) {
       // @ts-ignore
       template_component.querySelector('.tunkit_template_icon_detail').onclick = function (e) {
         e.stopPropagation();
@@ -84,16 +84,27 @@ export function handleCreateTemplatePanel() {
           if (data.status == 'success' && data.id) {
             const template_component = getTemplateItemComponent();
             handleClickDetailTemplate(data.id, template_component, payload);
+            template_component
+              .getElement()
+              .querySelector('.ytp-menuitem-label')!.innerHTML += ` <sup class="tunkit_new_template">new</sup>`;
+            template_component.getElement().addEventListener(
+              'click',
+              function () {
+                template_component.setName(payload.name);
+              },
+              { once: true }
+            );
+            _.TEMPLATE_PANEL_WRAPPER!.prepend(template_component.getElement());
           }
         });
     });
   };
 }
-function handleClickDetailTemplate(key: string, template_component: any, templates: TemplateType) {
+function handleClickDetailTemplate(key: string, template_component: TemplateItemComponent, templates: TemplateType) {
   template_component.setName(templates.name);
   template_component.setDescription(templates.description);
-  template_component.setTotalNotes(Object.keys(templates.timelineNotes).length);
-  template_component.onCLickDetail(function () {
+  template_component.setTimelineNote(templates.timelineNotes);
+  template_component.onClickDetail(function () {
     const template_dialog = getTemplateDialogComponent();
     template_dialog.setName(template_component.getName());
     template_dialog.setDescription(template_component.getDescription());
@@ -137,10 +148,15 @@ function handleClickDetailTemplate(key: string, template_component: any, templat
     });
   });
   template_component.onClick(function () {
+    _.PANEL_WRAPPER?.querySelector('.tunkit_template_panel_item_selected')?.classList?.remove(
+      'tunkit_template_panel_item_selected'
+    );
+    template_component.getElement().classList.add('tunkit_template_panel_item_selected');
     _.CURRENT_TEMPLATE_ID = key;
     setCurrentTemplate(template_component.getName());
+    setCurrentTotalNotes(Object.keys(template_component.getTimelineNotes()).length);
     showPanel('.tunkit_panel.panel_main', 'tunkit_panel_active');
     setDisableItems(_.PANEL_WRAPPER as HTMLElement, '.tunkit_disable_for_template', false);
+    _.CURRENT_TEMPLATE_PANEL_ITEM = template_component;
   });
-  template_component.render();
 }
