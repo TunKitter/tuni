@@ -88,15 +88,17 @@ function handleDataInteractiveData(type: ActionType, detailAction: HTMLElement, 
         return return_data;
       } else {
         const timeout_check = setTimeout(() => {
-          const checked_timeline = detailAction.querySelector(
-            `input[type="radio"].tunkit_checkbox#${data.timeline_id}`
-          ) as HTMLInputElement;
-          if (checked_timeline !== null) {
+          if (detailAction.querySelector('.tunkit_reference_note_item') !== null) {
+            const checked_timeline = detailAction.querySelector(
+              `input[type="radio"].tunkit_checkbox#${data.timeline_id}`
+            ) as HTMLInputElement;
+            if (checked_timeline) {
+              checked_timeline.checked = true;
+              const selected_element = getSelectedElement(detailAction);
+              selected_element.template_id.setAttribute('open', 'true');
+              selected_element.youtube_id.setAttribute('open', 'true');
+            }
             clearTimeout(timeout_check);
-            checked_timeline.checked = true;
-            const selected_element = getSelectedElement(detailAction);
-            selected_element.template_id.setAttribute('open', 'true');
-            selected_element.youtube_id.setAttribute('open', 'true');
           }
         }, 10);
       }
