@@ -1,5 +1,6 @@
 import { TimelineDataType } from '../types';
 import { randomString } from '../utils';
+import _ from '../variables';
 import Template from './Template';
 
 export default class Timeline {
@@ -14,6 +15,7 @@ export default class Timeline {
       withTemplate(templateID: string) {
         return {
           insert(data: TimelineDataType) {
+            _.TEMP_REFERENCE_ACTION_ELEMENT = null;
             const timeline_id = randomString();
             return Template.from(youtubeID)
               .get(templateID)
@@ -38,6 +40,7 @@ export default class Timeline {
               });
           },
           update(id: string, data: TimelineDataType) {
+            _.TEMP_REFERENCE_ACTION_ELEMENT = null;
             return Template.from(youtubeID)
               .get(templateID)
               .then(template => {
@@ -58,6 +61,7 @@ export default class Timeline {
               });
           },
           remove(id: string) {
+            _.TEMP_REFERENCE_ACTION_ELEMENT = null;
             return Template.from(youtubeID)
               .get(templateID)
               .then(template => {

@@ -13,6 +13,7 @@ const _ = {
   CURRENT_TEMPLATE_ID: null as string | null,
   TIMELINE_NOTE: {} as { [key: string]: TemplateType },
   VIDEO: null as HTMLVideoElement | null,
+  TEMP_REFERENCE_ACTION_ELEMENT: null as DocumentFragment | null,
 };
 
 export function initAfterInsertComponent() {

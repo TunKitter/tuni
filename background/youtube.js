@@ -1,7 +1,12 @@
 chrome.runtime.onMessage.addListener((message, sender, response) => {
   (async () => {
-    const youtubeIDKey = `yi_${message.youtubeID}`;
+    const youtubeIDKey = `yi_${message?.youtubeID}`;
     switch (message.type) {
+      case 'GET_ALL_DATA': {
+        const data = await chrome.storage.local.get();
+        response(data);
+        break;
+      }
       case 'GET_TITLE_YOUTUBE': {
         const data = await chrome.storage.local.get({ [youtubeIDKey]: false });
         if (data[youtubeIDKey] == false) response(undefined);
