@@ -1,3 +1,4 @@
+import { getFlashcardTimelineDialog } from '../dialogs/flashcard_timeline_dialog';
 import { getMessageTimelineDialog } from '../dialogs/message_timeline_dialog';
 import { ButtonAdderWithDialogActionFlow } from '../flows/button_adder_with_dialog';
 import { DialogWithOverlayFlow } from '../flows/dialog_with_overlay';
@@ -146,4 +147,52 @@ function handleCreateMessageTimeline() {
       });
   });
 }
-function handleCreateFlashcardTimeline() {}
+function handleCreateFlashcardTimeline() {
+  const flashcard_timeline_dialog = getFlashcardTimelineDialog();
+  const dialog_flow = DialogWithOverlayFlow(flashcard_timeline_dialog.BASE.getElement(), {
+    close_selector: ['.tunkit_close_timeline'],
+    overlay_z_index: 2201,
+  });
+  flashcard_timeline_dialog.BASE.setTitle('Create flashcard timeline');
+  flashcard_timeline_dialog.BASE.setStartTime(_.VIDEO!.currentTime);
+  flashcard_timeline_dialog.BASE.setEndTime(_.VIDEO!.currentTime + 5);
+  flashcard_timeline_dialog.BASE.getElement().querySelector('.delete_timeline_button')?.remove();
+  const temp_action = {} as {
+    [key: string]: ActionDataType;
+  };
+  ButtonAdderWithDialogActionFlow(temp_action, flashcard_timeline_dialog);
+  flashcard_timeline_dialog.render();
+  flashcard_timeline_dialog.BASE.onClickSave(function () {
+    const payload: TimelineDataType = {
+      name: flashcard_timeline_dialog.BASE.getName(),
+      startTime: flashcard_timeline_dialog.BASE.getStartTime(),
+      endTime: flashcard_timeline_dialog.BASE.getEndTime(),
+      tags: flashcard_timeline_dialog.BASE.INPUT_TAG.getData(),
+      data: flashcard_timeline_dialog.getDataTimeline(),
+      action: temp_action,
+      type: 'flashcard',
+      timeline: getTimelineTextFormat(
+        flashcard_timeline_dialog.BASE.getStartTime(),
+        flashcard_timeline_dialog.BASE.getEndTime()
+      ),
+    };
+    Timeline.from(getCurrentYoutubeId())
+      .withTemplate(_.CURRENT_TEMPLATE_ID as string)
+      .insert(payload)
+      .then(data => {
+        if (data.status == 'success') {
+          _.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes[data.id] = payload;
+          const timeline_item = getTimelinePanelItem();
+          timeline_item.setTimelineText(payload.startTime, payload.endTime);
+          timeline_item.setName(payload.name);
+          timeline_item.setType(payload.type);
+          timeline_item.onClick(() => handleClickTimelineItemPanel(data.id, timeline_item));
+          timeline_item.render();
+          dialog_flow.removeDialog();
+          dialog_flow.removeOverlay();
+          _.IS_GET_TEMPLATE = false;
+          setCurrentTotalNotes(Object.keys(_.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes).length);
+        }
+      });
+  });
+}

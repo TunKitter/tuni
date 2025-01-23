@@ -1,9 +1,9 @@
-import { getMessageTimelineDialog } from '../dialogs/message_timeline_dialog';
 import { ButtonAdderWithDialogActionFlow } from '../flows/button_adder_with_dialog';
 import { DialogWithOverlayFlow } from '../flows/dialog_with_overlay';
 import Timeline from '../models/Timeline';
+import { DialogTimelineTypeNavigator } from '../navigator/update_dialog_timeline_type_navigator';
 import { TimelineDataType, TimelineType } from '../types';
-import { getComponent, getCurrentYoutubeId, getTimelineTextFormat, secondsToHms } from '../utils';
+import { getComponent, getCurrentYoutubeId, getTimelineTextFormat } from '../utils';
 import _ from '../variables';
 import { setCurrentTotalNotes } from './panel';
 
@@ -56,21 +56,21 @@ export function getTimelinePanelItem() {
 
 export function handleClickTimelineItemPanel(key: string, timeline_component: any) {
   const data_timeline = _.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes[key];
-  const message_timeline_dialog = getMessageTimelineDialog();
-  const dialog_flow = DialogWithOverlayFlow(message_timeline_dialog.BASE.getElement(), {
+  const timeline_dialog = DialogTimelineTypeNavigator(data_timeline.type)!;
+  const dialog_flow = DialogWithOverlayFlow(timeline_dialog.BASE.getElement(), {
     close_selector: ['.tunkit_close_timeline'],
     overlay_z_index: 2201,
   });
-  message_timeline_dialog.BASE.setTitle('Update message timeline');
-  message_timeline_dialog.BASE.setName(data_timeline.name);
-  message_timeline_dialog.BASE.setStartTime(data_timeline.startTime);
-  message_timeline_dialog.BASE.setEndTime(data_timeline.endTime);
-  message_timeline_dialog.BASE.INPUT_TAG.setData(data_timeline.tags);
-  message_timeline_dialog.setDataTimeline(data_timeline.data);
+  timeline_dialog.BASE.setTitle('Update message timeline');
+  timeline_dialog.BASE.setName(data_timeline.name);
+  timeline_dialog.BASE.setStartTime(data_timeline.startTime);
+  timeline_dialog.BASE.setEndTime(data_timeline.endTime);
+  timeline_dialog.BASE.INPUT_TAG.setData(data_timeline.tags);
+  timeline_dialog.setDataTimeline(data_timeline.data);
   const temp_action = JSON.parse(JSON.stringify(data_timeline.action));
-  ButtonAdderWithDialogActionFlow(temp_action, message_timeline_dialog);
-  message_timeline_dialog.render();
-  message_timeline_dialog.BASE.onClickDelete(function () {
+  ButtonAdderWithDialogActionFlow(temp_action, timeline_dialog);
+  timeline_dialog.render();
+  timeline_dialog.BASE.onClickDelete(function () {
     if (confirm('Are you sure to delete this timeline note?')) {
       Timeline.from(getCurrentYoutubeId())
         .withTemplate(_.CURRENT_TEMPLATE_ID as string)
@@ -87,19 +87,16 @@ export function handleClickTimelineItemPanel(key: string, timeline_component: an
         });
     }
   });
-  message_timeline_dialog.BASE.onClickSave(function () {
+  timeline_dialog.BASE.onClickSave(function () {
     const payload: TimelineDataType = {
-      name: message_timeline_dialog.BASE.getName(),
-      startTime: message_timeline_dialog.BASE.getStartTime(),
-      endTime: message_timeline_dialog.BASE.getEndTime(),
-      tags: message_timeline_dialog.BASE.INPUT_TAG.getData(),
-      data: message_timeline_dialog.getDataTimeline(),
+      name: timeline_dialog.BASE.getName(),
+      startTime: timeline_dialog.BASE.getStartTime(),
+      endTime: timeline_dialog.BASE.getEndTime(),
+      tags: timeline_dialog.BASE.INPUT_TAG.getData(),
+      data: timeline_dialog.getDataTimeline(),
       action: temp_action,
-      type: 'message',
-      timeline: getTimelineTextFormat(
-        message_timeline_dialog.BASE.getStartTime(),
-        message_timeline_dialog.BASE.getEndTime()
-      ),
+      type: data_timeline.type,
+      timeline: getTimelineTextFormat(timeline_dialog.BASE.getStartTime(), timeline_dialog.BASE.getEndTime()),
     };
     Timeline.from(getCurrentYoutubeId())
       .withTemplate(_.CURRENT_TEMPLATE_ID as string)

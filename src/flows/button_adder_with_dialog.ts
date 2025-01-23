@@ -5,15 +5,15 @@ import { DialogWithOverlayFlow } from './dialog_with_overlay';
 
 export function ButtonAdderWithDialogActionFlow(
   temp_action: { [key: string]: ActionDataType },
-  message_timeline_dialog: any
+  timeline_dialog: any
 ) {
   Object.keys(temp_action).forEach(key => {
-    const button_adder = message_timeline_dialog.BUTTON_ADDER.addNewAction();
+    const button_adder = timeline_dialog.BUTTON_ADDER.addNewAction();
     button_adder.setName(temp_action[key].name);
     button_adder.setIcon(temp_action[key].type);
     button_adder.onClick(() => handleClickButtonAdder(temp_action, key, button_adder));
   });
-  message_timeline_dialog.BUTTON_ADDER.onAddNewAction(function (button_item: ActionButtonAdderItemType) {
+  timeline_dialog.BUTTON_ADDER.onAddNewAction(function (button_item: ActionButtonAdderItemType) {
     const action_id = randomString();
     temp_action[action_id] = {
       name: 'No title',
