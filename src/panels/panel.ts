@@ -1,9 +1,11 @@
 import { getFlashcardTimelineDialog } from '../dialogs/flashcard_timeline_dialog';
 import { getMessageTimelineDialog } from '../dialogs/message_timeline_dialog';
+import { getTypingTimelineDialog, renderAnswerItem } from '../dialogs/typing_timeline_dialog';
 import { ButtonAdderWithDialogActionFlow } from '../flows/button_adder_with_dialog';
 import { DialogWithOverlayFlow } from '../flows/dialog_with_overlay';
+import { InputTagSelectWithDialogFlow } from '../flows/input_tags_select_with_typing_dialog';
 import Timeline from '../models/Timeline';
-import { ActionDataType, TimelineDataType } from '../types';
+import { ActionDataType, ActionTypingDataType, TimelineDataType } from '../types';
 import { getCurrentYoutubeId, getTimelineTextFormat, randomString } from '../utils';
 import _ from '../variables';
 import { handleLoadTemplate } from './panel_template';
@@ -52,6 +54,11 @@ export function handleChangeViewPanel() {
       case 'create_flashcard_timeline': {
         if (!_.CURRENT_TEMPLATE_ID) return;
         handleCreateFlashcardTimeline();
+        break;
+      }
+      case 'create_typing_timeline': {
+        if (!_.CURRENT_TEMPLATE_ID) return;
+        handleCreateTypingTimeline();
         break;
       }
     }
@@ -187,6 +194,52 @@ function handleCreateFlashcardTimeline() {
           timeline_item.setName(payload.name);
           timeline_item.setType(payload.type);
           timeline_item.onClick(() => handleClickTimelineItemPanel(data.id, timeline_item));
+          timeline_item.render();
+          dialog_flow.removeDialog();
+          dialog_flow.removeOverlay();
+          _.IS_GET_TEMPLATE = false;
+          setCurrentTotalNotes(Object.keys(_.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes).length);
+        }
+      });
+  });
+}
+function handleCreateTypingTimeline() {
+  const typing_timeline_dialog = getTypingTimelineDialog();
+  typing_timeline_dialog.BASE.setTitle('Create typing timeline');
+  typing_timeline_dialog.BASE.setStartTime(_.VIDEO!.currentTime);
+  typing_timeline_dialog.BASE.setEndTime(_.VIDEO!.currentTime + 5);
+  const dialog_flow = DialogWithOverlayFlow(typing_timeline_dialog.BASE.getElement(), {
+    close_selector: ['.tunkit_close_timeline'],
+    overlay_z_index: 2201,
+  });
+  const temp_action = {} as { [key: string]: ActionTypingDataType };
+  InputTagSelectWithDialogFlow(temp_action, typing_timeline_dialog);
+  typing_timeline_dialog.render();
+  typing_timeline_dialog.BASE.onClickSave(function () {
+    const payload: TimelineDataType = {
+      name: typing_timeline_dialog.BASE.getName(),
+      startTime: typing_timeline_dialog.BASE.getStartTime(),
+      endTime: typing_timeline_dialog.BASE.getEndTime(),
+      tags: typing_timeline_dialog.BASE.INPUT_TAG.getData(),
+      data: { question: typing_timeline_dialog.getDataTimeline() },
+      action: temp_action,
+      type: 'typing',
+      timeline: getTimelineTextFormat(
+        typing_timeline_dialog.BASE.getStartTime(),
+        typing_timeline_dialog.BASE.getEndTime()
+      ),
+    };
+    Timeline.from(getCurrentYoutubeId())
+      .withTemplate(_.CURRENT_TEMPLATE_ID as string)
+      .insert(payload)
+      .then(result => {
+        if (result.status == 'success') {
+          _.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes[result.id] = payload;
+          const timeline_item = getTimelinePanelItem();
+          timeline_item.setTimelineText(payload.startTime, payload.endTime);
+          timeline_item.setName(payload.name);
+          timeline_item.setType(payload.type);
+          timeline_item.onClick(() => handleClickTimelineItemPanel(result.id, timeline_item));
           timeline_item.render();
           dialog_flow.removeDialog();
           dialog_flow.removeOverlay();

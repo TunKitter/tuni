@@ -1,5 +1,6 @@
 import { getFlashcardTimelineDialog } from '../dialogs/flashcard_timeline_dialog';
 import { getMessageTimelineDialog } from '../dialogs/message_timeline_dialog';
+import { getTypingTimelineDialog } from '../dialogs/typing_timeline_dialog';
 import { TimelineType } from '../types';
 
 export function DialogTimelineTypeNavigator(type: TimelineType) {
@@ -8,5 +9,7 @@ export function DialogTimelineTypeNavigator(type: TimelineType) {
       return getMessageTimelineDialog();
     case 'flashcard':
       return getFlashcardTimelineDialog();
+    case 'typing':
+      return getTypingTimelineDialog();
   }
 }

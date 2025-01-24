@@ -34,6 +34,14 @@ export type ActionDataType = {
   type: 'notification' | 'jump_timeline' | 'reference_note' | 'mark_correct' | 'mark_incorrect';
   data: any;
 };
+export type ActionTypingDataType = {
+  name: string;
+  type: 'notification' | 'jump_timeline' | 'reference_note' | 'mark_correct' | 'mark_incorrect';
+  data: any;
+  select_type: 'equal' | 'otherwise';
+  include: string[];
+};
+
 export type TemplateItemComponent = {
   render: () => void;
   setName: (name: string) => void;

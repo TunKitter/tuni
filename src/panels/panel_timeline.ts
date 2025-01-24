@@ -1,5 +1,6 @@
 import { ButtonAdderWithDialogActionFlow } from '../flows/button_adder_with_dialog';
 import { DialogWithOverlayFlow } from '../flows/dialog_with_overlay';
+import { InputTagSelectWithDialogFlow } from '../flows/input_tags_select_with_typing_dialog';
 import Timeline from '../models/Timeline';
 import { DialogTimelineTypeNavigator } from '../navigator/update_dialog_timeline_type_navigator';
 import { TimelineDataType, TimelineType } from '../types';
@@ -54,22 +55,57 @@ export function getTimelinePanelItem() {
   };
 }
 
+function handleClickMessageTimeline(timeline_dialog: any, data_timeline: any) {
+  timeline_dialog.setDataTimeline(data_timeline.data);
+  const temp_action = JSON.parse(JSON.stringify(data_timeline.action));
+  ButtonAdderWithDialogActionFlow(temp_action, timeline_dialog);
+  return function () {
+    return {
+      data: timeline_dialog.getDataTimeline(),
+      action: temp_action,
+      type: data_timeline.type,
+    };
+  };
+}
+function handleClickTypingTimeline(timeline_dialog: any, data_timeline: any) {
+  timeline_dialog.setDataTimeline(data_timeline.data.question);
+  const temp_action = JSON.parse(JSON.stringify(data_timeline.action));
+  InputTagSelectWithDialogFlow(temp_action, timeline_dialog);
+  return function () {
+    return {
+      data: { question: timeline_dialog.getDataTimeline() },
+      action: temp_action,
+      type: 'typing',
+    };
+  };
+}
 export function handleClickTimelineItemPanel(key: string, timeline_component: any) {
   const data_timeline = _.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes[key];
   const timeline_dialog = DialogTimelineTypeNavigator(data_timeline.type)!;
-  const dialog_flow = DialogWithOverlayFlow(timeline_dialog.BASE.getElement(), {
-    close_selector: ['.tunkit_close_timeline'],
-    overlay_z_index: 2201,
-  });
-  timeline_dialog.BASE.setTitle('Update message timeline');
+  timeline_dialog.BASE.setTitle(`Update ${data_timeline.type} timeline`);
   timeline_dialog.BASE.setName(data_timeline.name);
   timeline_dialog.BASE.setStartTime(data_timeline.startTime);
   timeline_dialog.BASE.setEndTime(data_timeline.endTime);
   timeline_dialog.BASE.INPUT_TAG.setData(data_timeline.tags);
-  timeline_dialog.setDataTimeline(data_timeline.data);
-  const temp_action = JSON.parse(JSON.stringify(data_timeline.action));
-  ButtonAdderWithDialogActionFlow(temp_action, timeline_dialog);
+  const dialog_flow = DialogWithOverlayFlow(timeline_dialog.BASE.getElement(), {
+    close_selector: ['.tunkit_close_timeline'],
+    overlay_z_index: 2201,
+  });
+  let data_return = {} as any;
+  switch (data_timeline.type) {
+    case 'message':
+    case 'flashcard': {
+      data_return = handleClickMessageTimeline(timeline_dialog, data_timeline);
+      break;
+    }
+    case 'typing': {
+      data_return = handleClickTypingTimeline(timeline_dialog, data_timeline);
+      break;
+    }
+  }
+
   timeline_dialog.render();
+
   timeline_dialog.BASE.onClickDelete(function () {
     if (confirm('Are you sure to delete this timeline note?')) {
       Timeline.from(getCurrentYoutubeId())
@@ -88,16 +124,17 @@ export function handleClickTimelineItemPanel(key: string, timeline_component: an
     }
   });
   timeline_dialog.BASE.onClickSave(function () {
-    const payload: TimelineDataType = {
+    let pre_payload: TimelineDataType = {
       name: timeline_dialog.BASE.getName(),
       startTime: timeline_dialog.BASE.getStartTime(),
       endTime: timeline_dialog.BASE.getEndTime(),
       tags: timeline_dialog.BASE.INPUT_TAG.getData(),
-      data: timeline_dialog.getDataTimeline(),
-      action: temp_action,
-      type: data_timeline.type,
+      data: 'nothing',
+      action: {},
+      type: 'message',
       timeline: getTimelineTextFormat(timeline_dialog.BASE.getStartTime(), timeline_dialog.BASE.getEndTime()),
     };
+    const payload = { ...pre_payload, ...data_return() };
     Timeline.from(getCurrentYoutubeId())
       .withTemplate(_.CURRENT_TEMPLATE_ID as string)
       .update(key, payload)
@@ -105,7 +142,6 @@ export function handleClickTimelineItemPanel(key: string, timeline_component: an
         if (data.status == 'success') {
           timeline_component.setTimelineText(payload.startTime, payload.endTime);
           timeline_component.setName(payload.name);
-          timeline_component.setType(payload.type);
           _.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes[key] = payload;
           dialog_flow.removeDialog();
           dialog_flow.removeOverlay();
