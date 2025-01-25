@@ -14,6 +14,7 @@ const _ = {
   TIMELINE_NOTE: {} as { [key: string]: TemplateType },
   VIDEO: null as HTMLVideoElement | null,
   TEMP_REFERENCE_ACTION_ELEMENT: null as DocumentFragment | null,
+  VIDEO_PLAYER: null as HTMLElement | null,
 };
 
 export function initAfterInsertComponent() {
@@ -28,5 +29,7 @@ export function initAfterInsertComponent() {
   document.body.insertAdjacentElement('afterend', _.DIALOG_WRAPPER);
   _.VIDEO = document.querySelector('video') as HTMLVideoElement;
   if (_.VIDEO == null) throw new Error('Can not find video element');
+  _.VIDEO_PLAYER = document.querySelector('.html5-video-player');
+  if(_.VIDEO_PLAYER == null) throw new Error('Can not find video player element');
 }
 export default _;

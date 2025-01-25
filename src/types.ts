@@ -41,7 +41,15 @@ export type ActionTypingDataType = {
   select_type: 'equal' | 'otherwise';
   include: string[];
 };
-
+export type ActionPointerDataType = {
+  name: string;
+  type: 'notification' | 'jump_timeline' | 'reference_note' | 'mark_correct' | 'mark_incorrect';
+  data: any;
+  axis: {
+    x: number;
+    y: number;
+  };
+};
 export type TemplateItemComponent = {
   render: () => void;
   setName: (name: string) => void;

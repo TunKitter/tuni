@@ -1,4 +1,5 @@
 import { ButtonAdderWithDialogActionFlow } from '../flows/button_adder_with_dialog';
+import { ButtonAdderWithPointerDialogActionFlow } from '../flows/button_adder_with_pointer_dialog';
 import { DialogWithOverlayFlow } from '../flows/dialog_with_overlay';
 import { InputTagSelectWithDialogFlow } from '../flows/input_tags_select_with_typing_dialog';
 import Timeline from '../models/Timeline';
@@ -79,6 +80,17 @@ function handleClickTypingTimeline(timeline_dialog: any, data_timeline: any) {
     };
   };
 }
+function handleClickPointerTimeline(timeline_dialog: any, data_timeline: any) {
+  const temp_action = JSON.parse(JSON.stringify(data_timeline.action));
+  ButtonAdderWithPointerDialogActionFlow(temp_action, timeline_dialog);
+  return function () {
+    return {
+      data: {},
+      action: temp_action,
+      type: 'pointer',
+    };
+  };
+}
 export function handleClickTimelineItemPanel(key: string, timeline_component: any) {
   const data_timeline = _.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes[key];
   const timeline_dialog = DialogTimelineTypeNavigator(data_timeline.type)!;
@@ -100,6 +112,10 @@ export function handleClickTimelineItemPanel(key: string, timeline_component: an
     }
     case 'typing': {
       data_return = handleClickTypingTimeline(timeline_dialog, data_timeline);
+      break;
+    }
+    case 'pointer': {
+      data_return = handleClickPointerTimeline(timeline_dialog, data_timeline);
       break;
     }
   }

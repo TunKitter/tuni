@@ -1,12 +1,14 @@
 import { getFlashcardTimelineDialog } from '../dialogs/flashcard_timeline_dialog';
 import { getMessageTimelineDialog } from '../dialogs/message_timeline_dialog';
-import { getTypingTimelineDialog, renderAnswerItem } from '../dialogs/typing_timeline_dialog';
+import { getPointerTimelineDialog } from '../dialogs/pointer_timeline_dialog';
+import { getTypingTimelineDialog } from '../dialogs/typing_timeline_dialog';
 import { ButtonAdderWithDialogActionFlow } from '../flows/button_adder_with_dialog';
+import { ButtonAdderWithPointerDialogActionFlow } from '../flows/button_adder_with_pointer_dialog';
 import { DialogWithOverlayFlow } from '../flows/dialog_with_overlay';
 import { InputTagSelectWithDialogFlow } from '../flows/input_tags_select_with_typing_dialog';
 import Timeline from '../models/Timeline';
 import { ActionDataType, ActionTypingDataType, TimelineDataType } from '../types';
-import { getCurrentYoutubeId, getTimelineTextFormat, randomString } from '../utils';
+import { getCurrentYoutubeId, getTimelineTextFormat } from '../utils';
 import _ from '../variables';
 import { handleLoadTemplate } from './panel_template';
 import { getTimelinePanelItem, handleClickTimelineItemPanel, handleLoadTimeline } from './panel_timeline';
@@ -59,6 +61,11 @@ export function handleChangeViewPanel() {
       case 'create_typing_timeline': {
         if (!_.CURRENT_TEMPLATE_ID) return;
         handleCreateTypingTimeline();
+        break;
+      }
+      case 'create_pointer_timeline': {
+        if (!_.CURRENT_TEMPLATE_ID) return;
+        handleCreatePointerTimeline();
         break;
       }
     }
@@ -208,6 +215,7 @@ function handleCreateTypingTimeline() {
   typing_timeline_dialog.BASE.setTitle('Create typing timeline');
   typing_timeline_dialog.BASE.setStartTime(_.VIDEO!.currentTime);
   typing_timeline_dialog.BASE.setEndTime(_.VIDEO!.currentTime + 5);
+  typing_timeline_dialog.BASE.getElement().querySelector('.delete_timeline_button')?.remove();
   const dialog_flow = DialogWithOverlayFlow(typing_timeline_dialog.BASE.getElement(), {
     close_selector: ['.tunkit_close_timeline'],
     overlay_z_index: 2201,
@@ -240,6 +248,53 @@ function handleCreateTypingTimeline() {
           timeline_item.setName(payload.name);
           timeline_item.setType(payload.type);
           timeline_item.onClick(() => handleClickTimelineItemPanel(result.id, timeline_item));
+          timeline_item.render();
+          dialog_flow.removeDialog();
+          dialog_flow.removeOverlay();
+          _.IS_GET_TEMPLATE = false;
+          setCurrentTotalNotes(Object.keys(_.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes).length);
+        }
+      });
+  });
+}
+function handleCreatePointerTimeline() {
+  const pointer_timeline_dialog = getPointerTimelineDialog();
+  pointer_timeline_dialog.BASE.setStartTime(_.VIDEO!.currentTime);
+  pointer_timeline_dialog.BASE.setEndTime(_.VIDEO!.currentTime + 5);
+  pointer_timeline_dialog.BASE.setTitle('Create pointer timeline');
+  pointer_timeline_dialog.BASE.getElement().querySelector('.delete_timeline_button')?.remove();
+  const dialog_flow = DialogWithOverlayFlow(pointer_timeline_dialog.BASE.getElement(), {
+    close_selector: ['.tunkit_close_timeline'],
+    overlay_z_index: 2201,
+  });
+  const temp_action = {};
+  ButtonAdderWithPointerDialogActionFlow(temp_action, pointer_timeline_dialog);
+  pointer_timeline_dialog.render();
+  pointer_timeline_dialog.BASE.onClickSave(function () {
+    const payload: TimelineDataType = {
+      name: pointer_timeline_dialog.BASE.getName(),
+      startTime: pointer_timeline_dialog.BASE.getStartTime(),
+      endTime: pointer_timeline_dialog.BASE.getEndTime(),
+      tags: pointer_timeline_dialog.BASE.INPUT_TAG.getData(),
+      data: {},
+      action: temp_action,
+      type: 'pointer',
+      timeline: getTimelineTextFormat(
+        pointer_timeline_dialog.BASE.getStartTime(),
+        pointer_timeline_dialog.BASE.getEndTime()
+      ),
+    };
+    Timeline.from(getCurrentYoutubeId())
+      .withTemplate(_.CURRENT_TEMPLATE_ID as string)
+      .insert(payload)
+      .then(data => {
+        if (data.status == 'success') {
+          _.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes[data.id] = payload;
+          const timeline_item = getTimelinePanelItem();
+          timeline_item.setTimelineText(payload.startTime, payload.endTime);
+          timeline_item.setName(payload.name);
+          timeline_item.setType(payload.type);
+          timeline_item.onClick(() => handleClickTimelineItemPanel(data.id, timeline_item));
           timeline_item.render();
           dialog_flow.removeDialog();
           dialog_flow.removeOverlay();
