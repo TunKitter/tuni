@@ -9,6 +9,7 @@ export function getTemplateDialogComponent() {
     render() {
       _.DIALOG_WRAPPER.appendChild(dialog);
       dialog.style.display = 'block';
+      _.VIDEO!.pause();
     },
     getName: () => input_name.value,
     getDescription: () => input_description.value,

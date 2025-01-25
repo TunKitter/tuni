@@ -13,6 +13,7 @@ export function getBaseTimelineDialog() {
     render() {
       _.DIALOG_WRAPPER.appendChild(dialog);
       dialog.style.display = 'block';
+      _.VIDEO!.pause();
     },
     INPUT_TAG: input_tags,
     getElement: () => dialog,
