@@ -1,10 +1,17 @@
 import { getTemplateDialogComponent } from '../dialogs/template_dialog';
 import { DialogWithOverlayFlow } from '../flows/dialog_with_overlay';
 import Template from '../models/Template';
-import { TemplateItemComponent, TemplateType } from '../types';
+import { TemplateItemComponent } from '../types';
 import { getComponent, getCurrentYoutubeId } from '../utils';
 import _ from '../variables';
-import { setCurrentTemplate, setCurrentTotalNotes, setDisableItems, showPanel } from './panel';
+import { activeTimelineInVideo } from '../video';
+import {
+  getStateActiveTimelineInVideo,
+  setCurrentTemplate,
+  setCurrentTotalNotes,
+  setDisableItems,
+  showPanel,
+} from './panel';
 
 export async function handleLoadTemplate() {
   const loader = _.PANEL_WRAPPER?.querySelector('#tunkit_loader.loader_template') as HTMLElement;
@@ -141,6 +148,7 @@ function handleClickDetailTemplate(key: string, template_component: TemplateItem
   template_component.onClick(function () {
     if (_.CURRENT_TEMPLATE_ID == key) return;
     _.CURRENT_TEMPLATE_ID = key;
+    activeTimelineInVideo(getStateActiveTimelineInVideo());
     _.TEMPLATE_PANEL_WRAPPER?.querySelector('.tunkit_template_panel_item_selected')?.classList?.remove(
       'tunkit_template_panel_item_selected'
     );

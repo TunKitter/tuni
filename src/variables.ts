@@ -1,4 +1,5 @@
-import { TemplateType } from './types';
+import TimelineInterface from './interface/TimelineInterface';
+import { TemplateType, TimelineDataType } from './types';
 import { getComponent } from './utils';
 
 const _ = {
@@ -15,6 +16,10 @@ const _ = {
   VIDEO: null as HTMLVideoElement | null,
   TEMP_REFERENCE_ACTION_ELEMENT: null as DocumentFragment | null,
   VIDEO_PLAYER: null as HTMLElement | null,
+  SET_TIMEOUT_RECHECK_TIMELINE: [] as any,
+  DATA_TIMELINE_INTERFACE: null as
+    | { start: number; end: number; element: TimelineInterface; timeline_id: string; timeline_data: TimelineDataType }[]
+    | null,
 };
 
 export function initAfterInsertComponent() {
@@ -30,6 +35,6 @@ export function initAfterInsertComponent() {
   _.VIDEO = document.querySelector('video') as HTMLVideoElement;
   if (_.VIDEO == null) throw new Error('Can not find video element');
   _.VIDEO_PLAYER = document.querySelector('.html5-video-player');
-  if(_.VIDEO_PLAYER == null) throw new Error('Can not find video player element');
+  if (_.VIDEO_PLAYER == null) throw new Error('Can not find video player element');
 }
 export default _;

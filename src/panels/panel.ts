@@ -10,6 +10,7 @@ import Timeline from '../models/Timeline';
 import { ActionDataType, ActionTypingDataType, TimelineDataType } from '../types';
 import { getCurrentYoutubeId, getTimelineTextFormat } from '../utils';
 import _ from '../variables';
+import { activeTimelineInVideo } from '../video';
 import { handleLoadTemplate } from './panel_template';
 import { getTimelinePanelItem, handleClickTimelineItemPanel, handleLoadTimeline } from './panel_timeline';
 
@@ -80,6 +81,7 @@ export function handleToggleMenuSwitcherIcon() {
     'click',
     function () {
       setActivePanel(!getActivePanel());
+      activeTimelineInVideo(getStateActiveTimelineInVideo());
     }
   );
 }
@@ -88,7 +90,11 @@ export function setActivePanel(status: boolean) {
     'aria-checked',
     status ? 'true' : 'false'
   );
-  (_.PANEL_WRAPPER?.querySelector('.tunkit_content') as HTMLElement).style.opacity = status ? '1' : '0.5';
+  //@ts-ignore
+  Object.assign(_.PANEL_WRAPPER?.querySelector('.tunkit_content')!.style, {
+    opacity: status ? '1' : '0.5',
+    pointerEvents: status ? 'auto' : 'none',
+  });
 }
 export function getActivePanel(): boolean {
   return (
@@ -303,4 +309,13 @@ function handleCreatePointerTimeline() {
         }
       });
   });
+}
+export function getStateActiveTimelineInVideo() {
+  const state = getActivePanel();
+  const config = {} as any;
+  if (_.DATA_TIMELINE_INTERFACE == null && typeof _.CURRENT_TEMPLATE_ID == 'string') config.data_timeline = 'set';
+  config.playing = state && typeof _.CURRENT_TEMPLATE_ID == 'string' ? 'add' : 'remove';
+  config.video = state && typeof _.CURRENT_TEMPLATE_ID == 'string' ? 'add' : 'remove';
+  config.timeout = 'clear';
+  return config;
 }

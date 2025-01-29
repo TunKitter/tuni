@@ -1,3 +1,4 @@
+import TimelineInterfaceElementNavigator from './navigator/timeline_interface_element_navigator';
 import { ActionPointerDataType } from './types';
 import { _getURL } from './utils';
 import _ from './variables';
@@ -83,4 +84,80 @@ export function initPointerVideo(temp_action: { [key: string]: ActionPointerData
     // pointer.style.left = (parseInt(pointer.style.left) / rootRect.width) * 100 + '%';
     // pointer.style.top = (parseInt(pointer.style.top) / rootRect.height) * 100 + '%';
   }
+}
+export function activeTimelineInVideo(state: {
+  timeout?: 'clear';
+  video?: 'add' | 'remove';
+  playing?: 'add' | 'remove';
+  data_timeline?: 'set';
+}) {
+  if (state?.data_timeline == 'set') setDataInterface();
+  if (state?.timeout == 'clear') clearAllTimeout();
+  if (state?.video)
+    _.VIDEO![state.video == 'add' ? 'addEventListener' : 'removeEventListener'](
+      'timeupdate',
+      activeTimelineVideoHandler
+    );
+  if (state?.playing)
+    _.VIDEO![state.playing == 'add' ? 'addEventListener' : 'removeEventListener'](
+      'playing',
+      activeTimelineVideoHandler
+    );
+}
+function activeTimelineVideoHandler() {
+  console.log('i check');
+  if (!Array.isArray(_.DATA_TIMELINE_INTERFACE)) throw new Error('There is some problem with timeline interface');
+
+  const currentTime = _.VIDEO!.currentTime;
+  const next_interface = _.DATA_TIMELINE_INTERFACE.find(cur => cur.start <= currentTime && currentTime <= cur.end);
+  if (next_interface != undefined) {
+    next_interface.element.show();
+    activeTimelineInVideo({ video: 'add' });
+  } else {
+    _.DATA_TIMELINE_INTERFACE.map(e => void e.element.hide());
+    const next_interface = _.DATA_TIMELINE_INTERFACE.reduce(
+      (prev, cur) => {
+        const currentTime = _.VIDEO!.currentTime;
+        if (cur.start >= currentTime && currentTime <= cur.end && cur.start < prev.start) return cur;
+        else return prev;
+      },
+      { start: _.VIDEO!.duration, end: -1 }
+    ) as any;
+    if (next_interface != undefined && next_interface.end >= 0) {
+      const timeout = (next_interface.start - _.VIDEO!.currentTime - 1) * 1000;
+      console.log('i will be active in ', timeout, ' millisecond');
+      activeTimelineInVideo({ timeout: 'clear', video: 'remove' });
+      _.SET_TIMEOUT_RECHECK_TIMELINE.push(
+        setTimeout(
+          () => {
+            activeTimelineInVideo({ video: 'add' });
+          },
+          timeout > 0 ? timeout : 0
+        )
+      );
+    } else {
+      activeTimelineInVideo({ video: 'remove', timeout: 'clear' });
+    }
+  }
+}
+function clearAllTimeout() {
+  //@ts-ignore
+  _.SET_TIMEOUT_RECHECK_TIMELINE.forEach(timeout => void clearTimeout(timeout));
+  _.SET_TIMEOUT_RECHECK_TIMELINE = [];
+}
+export function setDataInterface() {
+  if (typeof _.CURRENT_TEMPLATE_ID != 'string') throw new Error('There is some problem when set timeline interface');
+  _.DATA_TIMELINE_INTERFACE?.map(e => e.element.removeElement());
+  _.DATA_TIMELINE_INTERFACE = [];
+  Object.entries(_.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes).forEach(([key, value]) => {
+    const element = TimelineInterfaceElementNavigator(value.type, value);
+    element.render();
+    _.DATA_TIMELINE_INTERFACE!.push({
+      start: value.startTime,
+      end: value.endTime,
+      element: element,
+      timeline_id: key,
+      timeline_data: value,
+    });
+  });
 }

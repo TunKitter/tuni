@@ -775,20 +775,25 @@ details[open] details[open] > .tunkit_reference_note_item .content {
   align-items: center;
   gap: 2px;
 }
-.tunkit_action_notification_handler {
-  color: rgb(29, 161, 242);
+.tunkit_action_handler {
   left: initial;
   right: -100%;
   bottom: initial;
-  box-shadow: 0 0 0px 2px rgb(29 161 242 / 70%);
   font-family: 'DM Sans';
   font-size: 1.7em;
   border-radius: 0;
-  background: rgb(29 161 242 / 30%);
   width: 30%;
   height: 100%;
   top: 0;
   color: white;
+}
+.tunkit_action_notification_handler {
+  box-shadow: 0 0 0px 2px rgb(29 161 242 / 70%);
+  background: rgb(29 161 242 / 30%);
+}
+.tunkit_action_jump_timeline_handler {
+  box-shadow: 0 0 0px 2px #b1922e;
+  background: #473c1969;
 }
 .tunkit_action_reference_handler {
   left: initial;
@@ -808,10 +813,10 @@ details[open] details[open] > .tunkit_reference_note_item .content {
   justify-content: flex-start;
   gap: 1em;
 }
+
 .tunkit_toggle_action_interface {
   width: 50px;
   height: 50px;
-  background: rgb(29 161 242 / 44%);
   position: absolute;
   top: 50%;
   left: 0;
@@ -819,8 +824,15 @@ details[open] details[open] > .tunkit_reference_note_item .content {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid rgba(29, 161, 242, 0.7);
   border-right: none;
+}
+.tunkit_action_notification_handler .tunkit_toggle_action_interface {
+  background: rgb(29 161 242 / 44%);
+  border: 2px solid rgba(29, 161, 242, 0.7);
+}
+.tunkit_action_jump_timeline_handler .tunkit_toggle_action_interface {
+  background: #473c1969;
+  border: 2px solid #b1922e;
 }
 .tunkit_segment_track_wrapper {
   margin: 1em;
