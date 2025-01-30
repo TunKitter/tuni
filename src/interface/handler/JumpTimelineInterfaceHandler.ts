@@ -10,7 +10,7 @@ export default class JumpTimelineInterfaceHandler {
     this.element.getElement().classList.add('tunkit_action_jump_timeline_handler');
     //@ts-ignore
     this.element.getElement().querySelector('.tunkit_toggle_action_interface img')?.style.filter = 'hue-rotate(210deg)';
-    this.element.setMessage(this.data.message);
+    this.element.setContent(this.data.message);
   }
   getDrawerElement: () => ReturnType<typeof getDrawerPlayerComponent> = () => this.element;
   handle() {

@@ -899,3 +899,11 @@ details[open] details[open] > .tunkit_reference_note_item .content {
 .tunkit_close_icon_input_tags_wrapper {
   user-select: none;
 }
+.tunkit_hint_player_drawer {
+  padding: 0;
+  font-style: italic;
+  font-family: serif;
+  margin-bottom: 2em;
+  font-size: 0.6em;
+  color: #d7d7d7;
+}

@@ -7,7 +7,7 @@ export default class NotificationInterfaceHandler {
   constructor(message: string) {
     const player_drawer = getDrawerPlayerComponent();
     this.element = player_drawer;
-    player_drawer.setMessage(message);
+    player_drawer.setContent(message);
     player_drawer.getElement().classList.add('tunkit_action_notification_handler');
   }
   getElement() {
