@@ -753,7 +753,7 @@ details[open] details[open] > .tunkit_reference_note_item .content {
 }
 
 .tunkit_action_reference_note_interface {
-  background: #ffffff5e;
+  background: #5e5e5e;
   border-top: 2px solid white;
 }
 .tunkit_action_mark_correct_interface {
@@ -786,6 +786,7 @@ details[open] details[open] > .tunkit_reference_note_item .content {
   height: 100%;
   top: 0;
   color: white;
+  max-width: 80%;
 }
 .tunkit_action_notification_handler {
   box-shadow: 0 0 0px 2px rgb(29 161 242 / 70%);
@@ -796,22 +797,8 @@ details[open] details[open] > .tunkit_reference_note_item .content {
   background: #473c1969;
 }
 .tunkit_action_reference_handler {
-  left: initial;
-  right: -100%;
-  bottom: initial;
   box-shadow: rgb(255 255 255 / 70%) 0px 0px 0px 2px;
   background: black;
-  font-family: 'DM Sans';
-  font-size: 1.7em;
-  border-radius: 0;
-  width: 30%;
-  height: 100%;
-  top: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: 1em;
 }
 
 .tunkit_toggle_action_interface {
@@ -833,6 +820,11 @@ details[open] details[open] > .tunkit_reference_note_item .content {
 .tunkit_action_jump_timeline_handler .tunkit_toggle_action_interface {
   background: #473c1969;
   border: 2px solid #b1922e;
+}
+.tunkit_action_reference_handler .tunkit_toggle_action_interface {
+  background: rgb(255 255 255 / 70%);
+  border: 2px solid white;
+  filter: grayscale(1);
 }
 .tunkit_segment_track_wrapper {
   margin: 1em;

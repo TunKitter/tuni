@@ -69,6 +69,12 @@ function handleMoveableElementInPlayer(element: HTMLElement, overlay: HTMLElemen
   overlay.addEventListener('mouseup', mouseUp);
   overlay.addEventListener('mousedown', mouseDown);
   overlay.addEventListener('mousemove', mouseMove);
+  overlay.addEventListener('mouseleave', function () {
+    is_move = false;
+    // @ts-ignore
+    this.style.cursor = 'default';
+    element.style.zIndex = '1000';
+  });
   toggle_button.addEventListener('click', function () {
     overlay?.removeEventListener('mouseup', mouseUp);
     overlay?.removeEventListener('mousedown', mouseDown);

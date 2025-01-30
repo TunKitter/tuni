@@ -1,5 +1,6 @@
 import JumpTimelineInterfaceHandler from '../interface/handler/JumpTimelineInterfaceHandler';
 import NotificationInterfaceHandler from '../interface/handler/NotificationInterfaceHandler';
+import ReferenceTimelineInterfaceHandler from '../interface/handler/ReferenceTimelineInterfaceHandler';
 import { ActionDataType } from '../types';
 
 export function ElementWithTimelineInterfaceHandlerAndCloseFlow(
@@ -36,6 +37,21 @@ export function ElementWithTimelineInterfaceHandlerAndCloseFlow(
             timeline_interface.setPreventShow(false);
           });
         jump_timeline.handle();
+      };
+      break;
+    }
+    case 'reference_note': {
+      handle_function = function () {
+        const ref = new ReferenceTimelineInterfaceHandler(action_value.data);
+        timeline_interface.hide();
+        timeline_interface.setPreventShow(true);
+        ref
+          .getElement()
+          .getToggleButton()
+          .addEventListener('click', function () {
+            timeline_interface.setPreventShow(false);
+          });
+        ref.handle();
       };
       break;
     }

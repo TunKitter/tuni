@@ -33,6 +33,9 @@ export function getActionButtons() {
           case 'jump_timeline':
             this.addJumpTimelineAction(key, _action_data[key]);
             break;
+          case 'reference_note':
+            this.addReferenceNoteAction(key, _action_data[key]);
+            break;
         }
       });
     },
@@ -50,7 +53,18 @@ export function getActionButtons() {
     addJumpTimelineAction(key: string, value: ActionDataType) {
       const action = document.createElement('div');
       action.className = 'tunkit_action_interface tunkit_action_jump_timeline_interface';
-      action.innerHTML = `<img src="${_getURL('icons/jump_timeline_white.svg')}"> ${value.data.message}`;
+      action.innerHTML = `<img src="${_getURL('icons/jump_timeline_white.svg')}"> ${value.name}`;
+      action_button.appendChild(action);
+      action_data[key] = {
+        element: action,
+        data: value,
+      };
+    },
+    addReferenceNoteAction(key: string, value: ActionDataType) {
+      const action = document.createElement('div');
+
+      action.className = 'tunkit_action_interface tunkit_action_reference_note_interface';
+      action.innerHTML = `<img src="${_getURL('icons/reference_note_white.svg')}"> ${value.name}`;
       action_button.appendChild(action);
       action_data[key] = {
         element: action,
