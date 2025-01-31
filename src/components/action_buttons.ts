@@ -36,6 +36,12 @@ export function getActionButtons() {
           case 'reference_note':
             this.addReferenceNoteAction(key, _action_data[key]);
             break;
+          case 'mark_correct':
+            this.addMarkCorrectAction(key, _action_data[key]);
+            break;
+          case 'mark_incorrect':
+            this.addMarkIncorrectAction(key, _action_data[key]);
+            break;
         }
       });
     },
@@ -65,6 +71,26 @@ export function getActionButtons() {
 
       action.className = 'tunkit_action_interface tunkit_action_reference_note_interface';
       action.innerHTML = `<img src="${_getURL('icons/reference_note_white.svg')}"> ${value.name}`;
+      action_button.appendChild(action);
+      action_data[key] = {
+        element: action,
+        data: value,
+      };
+    },
+    addMarkCorrectAction(key: string, value: ActionDataType) {
+      const action = document.createElement('div');
+      action.className = 'tunkit_action_interface tunkit_action_mark_correct_interface';
+      action.innerHTML = `<img src="${_getURL('icons/mark_correct_white.svg')}"> ${value.name}`;
+      action_button.appendChild(action);
+      action_data[key] = {
+        element: action,
+        data: value,
+      };
+    },
+    addMarkIncorrectAction(key: string, value: ActionDataType) {
+      const action = document.createElement('div');
+      action.className = 'tunkit_action_interface tunkit_action_mark_incorrect_interface';
+      action.innerHTML = `<img src="${_getURL('icons/mark_incorrect_white.svg')}"> ${value.name}`;
       action_button.appendChild(action);
       action_data[key] = {
         element: action,

@@ -1,6 +1,7 @@
 import { getTemplateDialogComponent } from '../dialogs/template_dialog';
 import { DialogWithOverlayFlow } from '../flows/dialog_with_overlay';
 import Template from '../models/Template';
+import { removeAllInteractionElements } from '../navigate';
 import { TemplateItemComponent } from '../types';
 import { getComponent, getCurrentYoutubeId } from '../utils';
 import _ from '../variables';
@@ -148,6 +149,7 @@ function handleClickDetailTemplate(key: string, template_component: TemplateItem
   template_component.onClick(function () {
     if (_.CURRENT_TEMPLATE_ID == key) return;
     _.CURRENT_TEMPLATE_ID = key;
+    removeAllInteractionElements();
     activeTimelineInVideo(getStateActiveTimelineInVideo());
     _.TEMPLATE_PANEL_WRAPPER?.querySelector('.tunkit_template_panel_item_selected')?.classList?.remove(
       'tunkit_template_panel_item_selected'

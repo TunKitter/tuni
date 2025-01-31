@@ -147,7 +147,7 @@ function clearAllTimeout() {
 }
 export function setDataInterface() {
   if (typeof _.CURRENT_TEMPLATE_ID != 'string') throw new Error('There is some problem when set timeline interface');
-  _.DATA_TIMELINE_INTERFACE?.map(e => e.element.removeElement());
+  // _.DATA_TIMELINE_INTERFACE?.map(e => e.element.removeElement());
   _.DATA_TIMELINE_INTERFACE = [];
   Object.entries(_.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes).forEach(([key, value]) => {
     const element = TimelineInterfaceElementNavigator(value.type, value);

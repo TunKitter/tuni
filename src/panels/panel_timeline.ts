@@ -3,11 +3,13 @@ import { ButtonAdderWithPointerDialogActionFlow } from '../flows/button_adder_wi
 import { DialogWithOverlayFlow } from '../flows/dialog_with_overlay';
 import { InputTagSelectWithDialogFlow } from '../flows/input_tags_select_with_typing_dialog';
 import Timeline from '../models/Timeline';
+import { removeAllInteractionElements } from '../navigate';
 import { DialogTimelineTypeNavigator } from '../navigator/update_dialog_timeline_type_navigator';
 import { TimelineDataType, TimelineType } from '../types';
 import { getComponent, getCurrentYoutubeId, getTimelineTextFormat } from '../utils';
 import _ from '../variables';
-import { setCurrentTotalNotes } from './panel';
+import { activeTimelineInVideo } from '../video';
+import { getStateActiveTimelineInVideo, setCurrentTotalNotes } from './panel';
 
 export function handleLoadTimeline() {
   const loader = _.PANEL_WRAPPER?.querySelector('#tunkit_loader.loader_note') as HTMLElement;
@@ -135,6 +137,8 @@ export function handleClickTimelineItemPanel(key: string, timeline_component: an
             setCurrentTotalNotes(Object.keys(_.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes).length);
             dialog_flow.removeDialog();
             dialog_flow.removeOverlay();
+            removeAllInteractionElements();
+            activeTimelineInVideo(getStateActiveTimelineInVideo());
           }
         });
     }
@@ -161,6 +165,8 @@ export function handleClickTimelineItemPanel(key: string, timeline_component: an
           _.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes[key] = payload;
           dialog_flow.removeDialog();
           dialog_flow.removeOverlay();
+          removeAllInteractionElements();
+          activeTimelineInVideo(getStateActiveTimelineInVideo());
         }
       });
   });

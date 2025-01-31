@@ -1,4 +1,6 @@
 import JumpTimelineInterfaceHandler from '../interface/handler/JumpTimelineInterfaceHandler';
+import MarkCorrectActionHandler from '../interface/handler/MarkCorrectInterfaceHandler';
+import MarkIncorrectActionHandler from '../interface/handler/MarkIncorrectInterfaceHandler';
 import NotificationInterfaceHandler from '../interface/handler/NotificationInterfaceHandler';
 import ReferenceTimelineInterfaceHandler from '../interface/handler/ReferenceTimelineInterfaceHandler';
 import { ActionDataType } from '../types';
@@ -52,6 +54,32 @@ export function ElementWithTimelineInterfaceHandlerAndCloseFlow(
             timeline_interface.setPreventShow(false);
           });
         ref.handle();
+      };
+      break;
+    }
+    case 'mark_correct': {
+      handle_function = function () {
+        const correct_ = new MarkCorrectActionHandler(action_value);
+        timeline_interface.hide();
+        timeline_interface.setPreventShow(true);
+        setTimeout(() => {
+          timeline_interface.setPreventShow(false);
+          correct_.removeElement();
+        }, 2000);
+        correct_.handle();
+      };
+      break;
+    }
+    case 'mark_incorrect': {
+      handle_function = function () {
+        const correct_ = new MarkIncorrectActionHandler(action_value);
+        timeline_interface.hide();
+        timeline_interface.setPreventShow(true);
+        setTimeout(() => {
+          timeline_interface.setPreventShow(false);
+          correct_.removeElement();
+        }, 2000);
+        correct_.handle();
       };
       break;
     }

@@ -7,6 +7,7 @@ import { ButtonAdderWithPointerDialogActionFlow } from '../flows/button_adder_wi
 import { DialogWithOverlayFlow } from '../flows/dialog_with_overlay';
 import { InputTagSelectWithDialogFlow } from '../flows/input_tags_select_with_typing_dialog';
 import Timeline from '../models/Timeline';
+import { removeAllInteractionElements } from '../navigate';
 import { ActionDataType, ActionTypingDataType, TimelineDataType } from '../types';
 import { getCurrentYoutubeId, getTimelineTextFormat } from '../utils';
 import _ from '../variables';
@@ -163,6 +164,8 @@ function handleCreateMessageTimeline() {
           dialog_flow.removeOverlay();
           _.IS_GET_TEMPLATE = false;
           setCurrentTotalNotes(Object.keys(_.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes).length);
+          removeAllInteractionElements();
+          activeTimelineInVideo(getStateActiveTimelineInVideo());
         }
       });
   });
@@ -212,6 +215,8 @@ function handleCreateFlashcardTimeline() {
           dialog_flow.removeOverlay();
           _.IS_GET_TEMPLATE = false;
           setCurrentTotalNotes(Object.keys(_.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes).length);
+          removeAllInteractionElements();
+          activeTimelineInVideo(getStateActiveTimelineInVideo());
         }
       });
   });
@@ -259,6 +264,8 @@ function handleCreateTypingTimeline() {
           dialog_flow.removeOverlay();
           _.IS_GET_TEMPLATE = false;
           setCurrentTotalNotes(Object.keys(_.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes).length);
+          removeAllInteractionElements();
+          activeTimelineInVideo(getStateActiveTimelineInVideo());
         }
       });
   });
@@ -306,6 +313,8 @@ function handleCreatePointerTimeline() {
           dialog_flow.removeOverlay();
           _.IS_GET_TEMPLATE = false;
           setCurrentTotalNotes(Object.keys(_.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes).length);
+          removeAllInteractionElements();
+          activeTimelineInVideo(getStateActiveTimelineInVideo());
         }
       });
   });
@@ -313,7 +322,7 @@ function handleCreatePointerTimeline() {
 export function getStateActiveTimelineInVideo() {
   const state = getActivePanel();
   const config = {} as any;
-  if (_.DATA_TIMELINE_INTERFACE == null && typeof _.CURRENT_TEMPLATE_ID == 'string') config.data_timeline = 'set';
+  if (typeof _.CURRENT_TEMPLATE_ID == 'string') config.data_timeline = 'set';
   config.playing = state && typeof _.CURRENT_TEMPLATE_ID == 'string' ? 'add' : 'remove';
   config.video = state && typeof _.CURRENT_TEMPLATE_ID == 'string' ? 'add' : 'remove';
   config.timeout = 'clear';
