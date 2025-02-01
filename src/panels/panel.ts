@@ -235,6 +235,12 @@ function handleCreateTypingTimeline() {
   InputTagSelectWithDialogFlow(temp_action, typing_timeline_dialog);
   typing_timeline_dialog.render();
   typing_timeline_dialog.BASE.onClickSave(function () {
+    const id_otherwise = Object.keys(temp_action).find(e => temp_action[e].select_type == 'otherwise');
+    if (!id_otherwise) {
+      alert('It must have one "otherwise" action.');
+      return;
+    }
+    temp_action[id_otherwise].include = [];
     const payload: TimelineDataType = {
       name: typing_timeline_dialog.BASE.getName(),
       startTime: typing_timeline_dialog.BASE.getStartTime(),

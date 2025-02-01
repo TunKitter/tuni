@@ -6,23 +6,26 @@ import ReferenceTimelineInterfaceHandler from '../interface/handler/ReferenceTim
 import { ActionDataType } from '../types';
 
 export function ElementWithTimelineInterfaceHandlerAndCloseFlow(
-  click_element: HTMLElement,
+  click_element: HTMLElement | null,
   action_value: ActionDataType,
-  timeline_interface: { setPreventShow: Function; hide: Function }
+  timeline_interface: { setPreventShow: Function; hide: Function } | null
 ) {
   let handle_function: Function = function () {};
   switch (action_value.type) {
     case 'notification': {
       handle_function = function () {
         const noti = new NotificationInterfaceHandler(action_value.data);
-        timeline_interface.hide();
-        timeline_interface.setPreventShow(true);
-        noti
-          .getElement()
-          .getToggleButton()
-          .addEventListener('click', function () {
-            timeline_interface.setPreventShow(false);
-          });
+        if (timeline_interface !== null) {
+          timeline_interface.hide();
+          timeline_interface.setPreventShow(true);
+          noti
+            .getElement()
+            .getToggleButton()
+            .addEventListener('click', function () {
+              timeline_interface.setPreventShow(false);
+            });
+        }
+
         noti.handle();
       };
       break;
@@ -30,14 +33,17 @@ export function ElementWithTimelineInterfaceHandlerAndCloseFlow(
     case 'jump_timeline': {
       handle_function = function () {
         const jump_timeline = new JumpTimelineInterfaceHandler(action_value.data);
-        timeline_interface.hide();
-        timeline_interface.setPreventShow(true);
-        jump_timeline
-          .getDrawerElement()
-          .getToggleButton()
-          .addEventListener('click', function () {
-            timeline_interface.setPreventShow(false);
-          });
+        if (timeline_interface !== null) {
+          timeline_interface.hide();
+          timeline_interface.setPreventShow(true);
+          jump_timeline
+            .getDrawerElement()
+            .getToggleButton()
+            .addEventListener('click', function () {
+              timeline_interface.setPreventShow(false);
+            });
+        }
+
         jump_timeline.handle();
       };
       break;
@@ -45,14 +51,16 @@ export function ElementWithTimelineInterfaceHandlerAndCloseFlow(
     case 'reference_note': {
       handle_function = function () {
         const ref = new ReferenceTimelineInterfaceHandler(action_value.data);
-        timeline_interface.hide();
-        timeline_interface.setPreventShow(true);
-        ref
-          .getElement()
-          .getToggleButton()
-          .addEventListener('click', function () {
-            timeline_interface.setPreventShow(false);
-          });
+        if (timeline_interface !== null) {
+          timeline_interface.hide();
+          timeline_interface.setPreventShow(true);
+          ref
+            .getElement()
+            .getToggleButton()
+            .addEventListener('click', function () {
+              timeline_interface.setPreventShow(false);
+            });
+        }
         ref.handle();
       };
       break;
@@ -60,29 +68,34 @@ export function ElementWithTimelineInterfaceHandlerAndCloseFlow(
     case 'mark_correct': {
       handle_function = function () {
         const correct_ = new MarkCorrectActionHandler(action_value);
-        timeline_interface.hide();
-        timeline_interface.setPreventShow(true);
+        if (timeline_interface !== null) {
+          timeline_interface.hide();
+          timeline_interface.setPreventShow(true);
+        }
+        correct_.handle();
         setTimeout(() => {
-          timeline_interface.setPreventShow(false);
+          if (timeline_interface !== null) timeline_interface.setPreventShow(false);
           correct_.removeElement();
         }, 2000);
-        correct_.handle();
       };
       break;
     }
     case 'mark_incorrect': {
       handle_function = function () {
-        const correct_ = new MarkIncorrectActionHandler(action_value);
-        timeline_interface.hide();
-        timeline_interface.setPreventShow(true);
+        const incorrect_ = new MarkIncorrectActionHandler(action_value);
+        if (timeline_interface !== null) {
+          timeline_interface.hide();
+          timeline_interface.setPreventShow(true);
+        }
         setTimeout(() => {
-          timeline_interface.setPreventShow(false);
-          correct_.removeElement();
+          if (timeline_interface !== null) timeline_interface.setPreventShow(false);
+          incorrect_.removeElement();
         }, 2000);
-        correct_.handle();
+        incorrect_.handle();
       };
       break;
     }
   }
-  click_element.addEventListener('click', () => handle_function());
+  if (click_element !== null) click_element.addEventListener('click', () => handle_function());
+  else handle_function();
 }

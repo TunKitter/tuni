@@ -155,6 +155,15 @@ export function handleClickTimelineItemPanel(key: string, timeline_component: an
       timeline: getTimelineTextFormat(timeline_dialog.BASE.getStartTime(), timeline_dialog.BASE.getEndTime()),
     };
     const payload = { ...pre_payload, ...data_return() };
+    if (payload.type == 'typing') {
+      const temp_action = payload.action;
+      const id_otherwise = Object.keys(temp_action).find(e => temp_action[e].select_type == 'otherwise');
+      if (!id_otherwise) {
+        alert('It must have one "otherwise" action.');
+        return;
+      }
+      temp_action[id_otherwise].include = [];
+    }
     Timeline.from(getCurrentYoutubeId())
       .withTemplate(_.CURRENT_TEMPLATE_ID as string)
       .update(key, payload)

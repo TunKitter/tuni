@@ -1,4 +1,5 @@
 import { component_wrapper } from './init';
+import _ from './variables';
 
 export function _getURL(url: string): string {
   return chrome.runtime.getURL(`assets/${url}`);
@@ -51,4 +52,11 @@ export function insertAdjacentElement(wrapper: HTMLElement, element: HTMLElement
 }
 export function getTimelineTextFormat(start: number, end: number) {
   return `${secondsToHms(String(start))} — ${secondsToHms(String(end))}`;
+}
+export function isForcePauseVideo(state: boolean, remain_time?: number) {
+  _.VIDEO![state ? 'addEventListener' : 'removeEventListener']('playing', pauseVideo);
+  if (remain_time) _.VIDEO!.currentTime = remain_time;
+}
+function pauseVideo() {
+  (_.VIDEO as HTMLVideoElement).pause();
 }

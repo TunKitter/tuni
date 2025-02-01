@@ -10,10 +10,14 @@ export function InputTagSelectWithDialogFlow(
 ) {
   Object.keys(temp_action).forEach(key => {
     const answer_item = timeline_dialog.renderAnswerItem();
+
     answer_item.answerItem.INPUT_TAGS.setData(temp_action[key].include);
     handleCheckSelectType(key, temp_action, answer_item);
     answer_item.answerItem.setType(temp_action[key].select_type);
     answer_item.answerItem.onClickSetting(() => handleClickAnswerItem(temp_action, key, answer_item));
+    if (answer_item.answerItem.getSelectElement().value == 'otherwise') {
+      answer_item.answerItem.INPUT_TAGS.getElement().style.display = 'none';
+    }
   });
   timeline_dialog.onAddNewAnswerItem(function (button_item: ReturnType<typeof renderAnswerItem>) {
     const action_id = randomString();
