@@ -731,7 +731,6 @@ details[open] details[open] > .tunkit_reference_note_item .content {
   transform: scale(0);
   padding: 0;
   margin: 0;
-  z-index: 998;
 }
 .tunkit_action_interface {
   border-radius: 0;
