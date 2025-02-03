@@ -14,6 +14,7 @@ import _ from '../variables';
 import { activeTimelineInVideo } from '../video';
 import { handleLoadTemplate } from './panel_template';
 import { getTimelinePanelItem, handleClickTimelineItemPanel, handleLoadTimeline } from './panel_timeline';
+import { resetPanelScore } from './panel_track';
 
 export function handleShowPanel(wrapper: HTMLElement, callback: Function | undefined = undefined) {
   wrapper.querySelectorAll('*[data-tunkit-panel]').forEach(element => {
@@ -171,6 +172,7 @@ function handleCreateMessageTimeline() {
           setCurrentTotalNotes(Object.keys(_.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes).length);
           removeAllInteractionElements();
           activeTimelineInVideo(getStateActiveTimelineInVideo());
+          resetPanelScore();
         }
       });
   });
@@ -222,6 +224,7 @@ function handleCreateFlashcardTimeline() {
           setCurrentTotalNotes(Object.keys(_.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes).length);
           removeAllInteractionElements();
           activeTimelineInVideo(getStateActiveTimelineInVideo());
+          resetPanelScore();
         }
       });
   });
@@ -277,6 +280,7 @@ function handleCreateTypingTimeline() {
           setCurrentTotalNotes(Object.keys(_.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes).length);
           removeAllInteractionElements();
           activeTimelineInVideo(getStateActiveTimelineInVideo());
+          resetPanelScore();
         }
       });
   });
@@ -326,6 +330,7 @@ function handleCreatePointerTimeline() {
           setCurrentTotalNotes(Object.keys(_.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes).length);
           removeAllInteractionElements();
           activeTimelineInVideo(getStateActiveTimelineInVideo());
+          resetPanelScore();
         }
       });
   });

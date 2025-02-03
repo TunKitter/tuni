@@ -10,6 +10,7 @@ import { getComponent, getCurrentYoutubeId, getTimelineTextFormat } from '../uti
 import _ from '../variables';
 import { activeTimelineInVideo } from '../video';
 import { getStateActiveTimelineInVideo, setCurrentTotalNotes } from './panel';
+import { resetPanelScore } from './panel_track';
 
 export function handleLoadTimeline() {
   const loader = _.PANEL_WRAPPER?.querySelector('#tunkit_loader.loader_note') as HTMLElement;
@@ -139,6 +140,7 @@ export function handleClickTimelineItemPanel(key: string, timeline_component: an
             dialog_flow.removeOverlay();
             removeAllInteractionElements();
             activeTimelineInVideo(getStateActiveTimelineInVideo());
+            resetPanelScore();
           }
         });
     }
@@ -176,6 +178,7 @@ export function handleClickTimelineItemPanel(key: string, timeline_component: an
           dialog_flow.removeOverlay();
           removeAllInteractionElements();
           activeTimelineInVideo(getStateActiveTimelineInVideo());
+          resetPanelScore();
         }
       });
   });

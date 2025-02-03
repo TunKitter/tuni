@@ -15,6 +15,7 @@ export function resetPanelScore() {
 }
 export function resetScoreData() {
   _.TEMP_SCORE_DATA = { current_correct: 0, current_incorrect: 0, timeline: {} };
+  if (typeof _.CURRENT_TEMPLATE_ID != 'string') return;
   Object.entries(_.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes).forEach(
     ([timeline_id, timeline_value]) => {
       let is_satisfied = false;

@@ -1,4 +1,5 @@
 import { setCurrentTemplate, setCurrentTotalNotes, setDisableItems, showPanel } from './panels/panel';
+import { resetPanelScore } from './panels/panel_track';
 import _ from './variables';
 import { activeTimelineInVideo } from './video';
 
@@ -18,6 +19,7 @@ export default function handleNavigate() {
     _.DIALOG_WRAPPER.innerHTML = '';
     removeAllInteractionElements();
     activeTimelineInVideo({ playing: 'remove', timeout: 'clear', video: 'remove' });
+    resetPanelScore();
   });
 }
 export function removeAllInteractionElements() {
