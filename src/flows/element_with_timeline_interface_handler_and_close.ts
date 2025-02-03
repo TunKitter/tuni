@@ -3,7 +3,7 @@ import MarkCorrectActionHandler from '../interface/handler/MarkCorrectInterfaceH
 import MarkIncorrectActionHandler from '../interface/handler/MarkIncorrectInterfaceHandler';
 import NotificationInterfaceHandler from '../interface/handler/NotificationInterfaceHandler';
 import ReferenceTimelineInterfaceHandler from '../interface/handler/ReferenceTimelineInterfaceHandler';
-import { setSegmentScore } from '../panels/panel_track';
+import { getTrackScoreItemComponent, setSegmentScore } from '../panels/panel_track';
 import { ActionDataType } from '../types';
 import _ from '../variables';
 
@@ -111,6 +111,10 @@ function handleScorePanel(action_key: string) {
       if (item.action_id == action_key) {
         _.TEMP_SCORE_DATA[item.type == 'mark_correct' ? 'current_correct' : 'current_incorrect']++;
         setSegmentScore();
+        const element = getTrackScoreItemComponent(item.type);
+        element.setImgType(item.type);
+        element.setTitle(item.action_name);
+        _.TRACK_PANEL_ITEM_WRAPPER?.appendChild(element.getElement());
         timeline_value.is_executed = true;
       }
     });

@@ -30,7 +30,7 @@ const _ = {
     current_incorrect: number;
     timeline: {
       [key: string]: {
-        data: { type: 'mark_correct' | 'mark_incorrect'; action_id: string }[];
+        data: { type: 'mark_correct' | 'mark_incorrect'; action_id: string; action_name: string }[];
         is_executed: boolean;
       };
     };
