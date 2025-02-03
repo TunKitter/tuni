@@ -3,10 +3,13 @@ import MarkCorrectActionHandler from '../interface/handler/MarkCorrectInterfaceH
 import MarkIncorrectActionHandler from '../interface/handler/MarkIncorrectInterfaceHandler';
 import NotificationInterfaceHandler from '../interface/handler/NotificationInterfaceHandler';
 import ReferenceTimelineInterfaceHandler from '../interface/handler/ReferenceTimelineInterfaceHandler';
+import { setSegmentScore } from '../panels/panel_track';
 import { ActionDataType } from '../types';
+import _ from '../variables';
 
 export function ElementWithTimelineInterfaceHandlerAndCloseFlow(
   click_element: HTMLElement | null,
+  action_key: string,
   action_value: ActionDataType,
   timeline_interface: { setPreventShow: Function; hide: Function } | null
 ) {
@@ -75,6 +78,7 @@ export function ElementWithTimelineInterfaceHandlerAndCloseFlow(
         correct_.handle();
         setTimeout(() => {
           if (timeline_interface !== null) timeline_interface.setPreventShow(false);
+          handleScorePanel(action_key);
           correct_.removeElement();
         }, 2000);
       };
@@ -89,6 +93,7 @@ export function ElementWithTimelineInterfaceHandlerAndCloseFlow(
         }
         setTimeout(() => {
           if (timeline_interface !== null) timeline_interface.setPreventShow(false);
+          handleScorePanel(action_key);
           incorrect_.removeElement();
         }, 2000);
         incorrect_.handle();
@@ -98,4 +103,16 @@ export function ElementWithTimelineInterfaceHandlerAndCloseFlow(
   }
   if (click_element !== null) click_element.addEventListener('click', () => handle_function());
   else handle_function();
+}
+function handleScorePanel(action_key: string) {
+  Object.values(_.TEMP_SCORE_DATA.timeline).forEach(timeline_value => {
+    if (timeline_value.is_executed == true) return;
+    timeline_value.data.map(item => {
+      if (item.action_id == action_key) {
+        _.TEMP_SCORE_DATA[item.type == 'mark_correct' ? 'current_correct' : 'current_incorrect']++;
+        setSegmentScore();
+        timeline_value.is_executed = true;
+      }
+    });
+  });
 }

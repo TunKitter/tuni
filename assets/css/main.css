@@ -828,7 +828,7 @@ details[open] details[open] > .tunkit_reference_note_item .content {
 .tunkit_segment_track_wrapper {
   margin: 1em;
   background: #ffffff5e;
-  border-radius: 12px;
+  /* border-radius: 12px; */
   height: 1em;
   display: flex;
   align-items: center;
@@ -845,8 +845,8 @@ details[open] details[open] > .tunkit_reference_note_item .content {
 }
 .tunkit_segment_correct {
   background: #16c47f;
-  border-top-left-radius: 12px;
-  border-bottom-left-radius: 12px;
+  /* border-top-left-radius: 12px; */
+  /* border-bottom-left-radius: 12px; */
 }
 .tunkit_segment_incorrect {
   background: #d84040;

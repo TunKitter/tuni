@@ -19,7 +19,8 @@ export default class MessageTimelineInterface extends TimelineInterface {
     this.action.setActionData(this.data.action);
     const action_data = this.action.getActionData();
     Object.keys(action_data).forEach(
-      key => void ElementWithTimelineInterfaceHandlerAndCloseFlow(action_data[key].element, action_data[key].data, this)
+      key =>
+        void ElementWithTimelineInterfaceHandlerAndCloseFlow(action_data[key].element, key, action_data[key].data, this)
     );
   }
   getElement() {

@@ -25,15 +25,15 @@ export default class TypingTimelineInterface extends TimelineInterface {
       Object.entries(_this.data.action).forEach(([key, value]) => {
         if ((value as ActionTypingDataType).select_type === 'otherwise') otherwise_key = key;
         //@ts-ignore
-        if (value.include.includes(input_value)) {
+        else if (value.include.includes(input_value)) {
           is_match = true;
           _this.hide();
-          ElementWithTimelineInterfaceHandlerAndCloseFlow(null, value, null);
+          ElementWithTimelineInterfaceHandlerAndCloseFlow(null, key, value, null);
         }
       });
       if (!is_match) {
         if (otherwise_key == '') throw new Error('Not found otherwise key');
-        ElementWithTimelineInterfaceHandlerAndCloseFlow(null, _this.data.action[otherwise_key], null);
+        ElementWithTimelineInterfaceHandlerAndCloseFlow(null, otherwise_key, _this.data.action[otherwise_key], null);
       }
       isForcePauseVideo(false);
       _this.setPreventShow(true);

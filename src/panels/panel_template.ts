@@ -13,6 +13,7 @@ import {
   setDisableItems,
   showPanel,
 } from './panel';
+import { resetPanelScore } from './panel_track';
 
 export async function handleLoadTemplate() {
   const loader = _.PANEL_WRAPPER?.querySelector('#tunkit_loader.loader_template') as HTMLElement;
@@ -151,6 +152,7 @@ function handleClickDetailTemplate(key: string, template_component: TemplateItem
     _.CURRENT_TEMPLATE_ID = key;
     removeAllInteractionElements();
     activeTimelineInVideo(getStateActiveTimelineInVideo());
+    resetPanelScore();
     _.TEMPLATE_PANEL_WRAPPER?.querySelector('.tunkit_template_panel_item_selected')?.classList?.remove(
       'tunkit_template_panel_item_selected'
     );

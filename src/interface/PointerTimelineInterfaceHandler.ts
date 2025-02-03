@@ -22,7 +22,7 @@ export default class PointerTimelineInterfaceHandler extends TimelineInterface {
       });
       btn.className = 'tunkit_gradient_button_copy_by_css_scan';
       btn.setAttribute('role', 'button');
-      ElementWithTimelineInterfaceHandlerAndCloseFlow(btn, value, this);
+      ElementWithTimelineInterfaceHandlerAndCloseFlow(btn, key, value, this);
       btn.innerText = value.name;
       this.element.appendChild(btn);
     });

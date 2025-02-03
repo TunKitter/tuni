@@ -50,6 +50,11 @@ export function handleChangeViewPanel() {
         _.IS_GET_TIMELINE = true;
         break;
       }
+      case 'track': {
+        if (_.CURRENT_TEMPLATE_ID == null) break;
+        show();
+        break;
+      }
       case 'create_message_timeline': {
         if (!_.CURRENT_TEMPLATE_ID) return;
         handleCreateMessageTimeline();

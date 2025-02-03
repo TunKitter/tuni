@@ -20,6 +20,21 @@ const _ = {
   DATA_TIMELINE_INTERFACE: null as
     | { start: number; end: number; element: TimelineInterface; timeline_id: string; timeline_data: TimelineDataType }[]
     | null,
+  TRACK_PANEL_ITEM_WRAPPER: null as HTMLElement | null,
+  PANEL_TRACK_ITEM: document.createElement('div'),
+  SEGMENT_CORRECT_PANEL: null as HTMLElement | null,
+  SEGMENT_INCORRECT_PANEL: null as HTMLElement | null,
+  TRACK_SCORE: null as HTMLElement | null,
+  TEMP_SCORE_DATA: {} as {
+    current_correct: number;
+    current_incorrect: number;
+    timeline: {
+      [key: string]: {
+        data: { type: 'mark_correct' | 'mark_incorrect'; action_id: string }[];
+        is_executed: boolean;
+      };
+    };
+  },
 };
 
 export function initAfterInsertComponent() {
@@ -36,5 +51,9 @@ export function initAfterInsertComponent() {
   if (_.VIDEO == null) throw new Error('Can not find video element');
   _.VIDEO_PLAYER = document.querySelector('.html5-video-player');
   if (_.VIDEO_PLAYER == null) throw new Error('Can not find video player element');
+  _.TRACK_PANEL_ITEM_WRAPPER = _.PANEL_WRAPPER!.querySelector('.tunkit_track_note_wrapper');
+  _.SEGMENT_CORRECT_PANEL = _.PANEL_WRAPPER!.querySelector('.tunkit_segment_correct');
+  _.SEGMENT_INCORRECT_PANEL = _.PANEL_WRAPPER!.querySelector('.tunkit_segment_incorrect');
+  _.TRACK_SCORE = _.PANEL_WRAPPER!.querySelector('.tunkit_track_score');
 }
 export default _;
