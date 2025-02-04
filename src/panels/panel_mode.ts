@@ -1,7 +1,9 @@
 import _ from '../variables';
+import { resetPanelScore } from './panel_track';
 
 export function handleModePanel() {
   autoPauseInit();
+  handleResetScore();
 }
 function handleCheckboxChange(wrapper: HTMLElement) {
   const status = wrapper.getAttribute('aria-checked') == 'false';
@@ -25,4 +27,16 @@ export function autoPauseHandler() {
     _.VIDEO!.pause();
     _.MODE_DATA_PANEL.auto_pause.is_executed = true;
   }
+}
+function handleResetScore() {
+  //@ts-ignore
+  _.PANEL_WRAPPER?.querySelector('.panel_mode .reset_score_option').onclick = function () {
+    //@ts-ignore
+    this?.querySelector('.tunkit_btn_action_icon').style.opacity = 1;
+    setTimeout(() => {
+      //@ts-ignore
+      this?.querySelector('.tunkit_btn_action_icon').style.opacity = 0;
+    }, 2000);
+    resetPanelScore();
+  };
 }
