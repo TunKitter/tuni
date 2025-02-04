@@ -1,4 +1,5 @@
 import TimelineInterfaceElementNavigator from './navigator/timeline_interface_element_navigator';
+import { autoPauseHandler } from './panels/panel_mode';
 import { ActionPointerDataType } from './types';
 import { _getURL } from './utils';
 import _ from './variables';
@@ -112,9 +113,11 @@ function activeTimelineVideoHandler() {
   const next_interface = _.DATA_TIMELINE_INTERFACE.find(cur => cur.start <= currentTime && currentTime <= cur.end);
   if (next_interface != undefined) {
     next_interface.element.show();
+    autoPauseHandler();
     activeTimelineInVideo({ video: 'add' });
   } else {
     _.DATA_TIMELINE_INTERFACE.map(e => void e.element.hide());
+    _.MODE_DATA_PANEL.auto_pause.is_executed = false;
     const next_interface = _.DATA_TIMELINE_INTERFACE.reduce(
       (prev, cur) => {
         const currentTime = _.VIDEO!.currentTime;
@@ -125,7 +128,7 @@ function activeTimelineVideoHandler() {
     ) as any;
     if (next_interface != undefined && next_interface.end >= 0) {
       const timeout = (next_interface.start - _.VIDEO!.currentTime - 1) * 1000;
-      console.log('i will be active in ', timeout, ' millisecond');
+      // console.log('i will be active in ', timeout, ' millisecond');
       activeTimelineInVideo({ timeout: 'clear', video: 'remove' });
       _.SET_TIMEOUT_RECHECK_TIMELINE.push(
         setTimeout(

@@ -1,6 +1,7 @@
 import { handelTogglePanel, insertComponent, insertMenuPanel, insertToggleIconMenu } from './init';
 import handleNavigate from './navigate';
 import { handleChangeViewPanel, handleToggleMenuSwitcherIcon } from './panels/panel';
+import { handleModePanel } from './panels/panel_mode';
 import { handleCreateTemplatePanel } from './panels/panel_template';
 
 (() => {
@@ -19,6 +20,7 @@ import { handleCreateTemplatePanel } from './panels/panel_template';
       handleChangeViewPanel();
 
       handleCreateTemplatePanel();
+      handleModePanel();
       handleNavigate();
       observer.disconnect();
     }

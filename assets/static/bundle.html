@@ -170,6 +170,29 @@
       <div class="tunkit_body_note"></div>
       <div id="tunkit_loader" class="loader_note" style="margin: 10px auto"></div>
     </div>
+    <div class="tunkit_panel panel_mode">
+      <div class="tunkit_header">
+        <div data-tunkit-panel="main" data-tunkit-type="tunkit_panel_active">
+          <button class="ytp-button ytp-panel-back-button" aria-label="Back to previous menu"></button><span>Back</span>
+        </div>
+      </div>
+      <div class="ytp-menuitem tunkit_timeline_panel_item auto_pause_mode" role="menuitem">
+        <div class="ytp-menuitem-icon timeline_panel_item_time_text"></div>
+        <div class="ytp-menuitem-label timeline_panel_item_name" style="flex-grow: 1">Auto pause timeline</div>
+        <div class="ytp-menuitem-content">
+          <div class="tunkit_align_center">
+            <div
+              class="ytp-menuitem ytp-drc-menu-item"
+              id="tunkit_toggle_auto_pause"
+              role="menuitemcheckbox"
+              aria-checked="false"
+            >
+              <div class="ytp-menuitem-toggle-checkbox"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="tunkit_panel panel_track">
       <div class="tunkit_header">
         <div data-tunkit-panel="main" data-tunkit-type="tunkit_panel_active">
@@ -255,7 +278,7 @@
         <div class="ytp-menuitem-icon"><img src="{{icon.subtitles}}" /></div>
         <div class="ytp-menuitem-label">Mode</div>
         <div class="ytp-menuitem-content">
-          <div><span class="tunkit_current_subtitles">Off</span> <span class="ytp-menu-label-secondary"></span></div>
+          <!-- <div><span class="tunkit_current_subtitles">Off</span> <span class="ytp-menu-label-secondary"></span></div> -->
         </div>
       </div>
       <div

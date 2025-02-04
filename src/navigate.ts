@@ -20,6 +20,7 @@ export default function handleNavigate() {
     removeAllInteractionElements();
     activeTimelineInVideo({ playing: 'remove', timeout: 'clear', video: 'remove' });
     resetPanelScore();
+    _.MODE_DATA_PANEL.auto_pause.is_executed = false;
   });
 }
 export function removeAllInteractionElements() {

@@ -51,6 +51,12 @@ export function handleChangeViewPanel() {
         _.IS_GET_TIMELINE = true;
         break;
       }
+      case 'mode': {
+        if (_.CURRENT_TEMPLATE_ID) show();
+        else break;
+        show();
+        break;
+      }
       case 'track': {
         if (_.CURRENT_TEMPLATE_ID == null) break;
         show();

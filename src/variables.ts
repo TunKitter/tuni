@@ -35,6 +35,9 @@ const _ = {
       };
     };
   },
+  MODE_DATA_PANEL: { auto_pause: { is_executed: false, state: false } } as {
+    auto_pause: { state: boolean; is_executed: boolean };
+  },
 };
 
 export function initAfterInsertComponent() {

@@ -153,6 +153,7 @@ function handleClickDetailTemplate(key: string, template_component: TemplateItem
     removeAllInteractionElements();
     activeTimelineInVideo(getStateActiveTimelineInVideo());
     resetPanelScore();
+    _.MODE_DATA_PANEL.auto_pause.is_executed = false;
     _.TEMPLATE_PANEL_WRAPPER?.querySelector('.tunkit_template_panel_item_selected')?.classList?.remove(
       'tunkit_template_panel_item_selected'
     );
