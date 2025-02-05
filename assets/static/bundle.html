@@ -313,9 +313,9 @@
   <div class="ytp-menuitem-icon" style="display: flex; align-items: center; justify-content: center">
     <img class="tunkit_parent_note_track_item_image" />
   </div>
-  <div class="ytp-menuitem-label" style="flex-grow: 1; max-width: 150px">angular js</div>
+  <div class="ytp-menuitem-label" style="flex-grow: 1; max-width: 150px; overflow: hidden"></div>
   <div class="ytp-menuitem-content">
-    <div class="tunkit_align_center"><span class="ytp-menu-label-secondary">Message</span></div>
+    <div class="tunkit_align_center"><span class="ytp-menu-label-secondary"></span></div>
   </div>
 </div>
 <details class="playlist-item tunkit_reference_note_template_item">
@@ -358,7 +358,7 @@
   <div class="ytp-menuitem-label tunkit_template_panel_item_name"></div>
   <div class="ytp-menuitem-content">
     <span class="tunkit_subtitles_author"
-      ><span style="min-width: 4.4em" class="tunkit_template_panel_item_total_note"> notes</span
+      ><span style="min-width: 4.4em; max-width: 5em" class="tunkit_template_panel_item_total_note"> notes</span
       ><span class="ytp-menu-label-secondary"><img class="tunkit_template_icon_detail" src="{{icon.info}}" /></span
     ></span>
   </div>
@@ -384,6 +384,17 @@
     <label>Message</label>
     <textarea class="tunkit_textarea tunkit_timeline_message" cols="70" rows="10"></textarea>
   </div>
+</div>
+<div class="tunkit_timeline_interface timeline_interface_message">
+  <div class="tunkit_align_center" style="justify-content: space-between; margin-bottom: 2em">
+    <div class="tunkit_badge_timeline_interface">
+      <img src="{{icon.notification_white}}" />
+      Message
+    </div>
+    <div class="tunkit_skip_timeline_interface">Skip</div>
+  </div>
+
+  <div class="tunkit_timeline_message_interface_content"></div>
 </div>
 <div class="panel_timeline_typing">
   <div style="display: flex; flex-direction: column; gap: 5px">

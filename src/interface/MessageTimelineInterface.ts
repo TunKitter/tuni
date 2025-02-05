@@ -2,6 +2,7 @@ import { getActionButtons } from '../components/action_buttons';
 import { ElementWithTimelineInterfaceHandlerAndCloseFlow } from '../flows/element_with_timeline_interface_handler_and_close';
 import { getPlayerOverlay } from '../overlay';
 import { TimelineDataType } from '../types';
+import { getComponent } from '../utils';
 import _ from '../variables';
 import TimelineInterface from './TimelineInterface';
 
@@ -11,9 +12,9 @@ export default class MessageTimelineInterface extends TimelineInterface {
   private action: ReturnType<typeof getActionButtons>;
   constructor(value: TimelineDataType) {
     super(value);
-    this.element = document.createElement('div');
-    this.element.className = 'tunkit_timeline_interface';
-    this.element.innerText = this.data.data;
+    this.element = getComponent('.tunkit_timeline_interface.timeline_interface_message', false);
+    //@ts-ignore
+    this.element.querySelector('.tunkit_timeline_message_interface_content').innerText = this.data.data;
     this.overlay = getPlayerOverlay();
     this.action = getActionButtons();
     this.action.setActionData(this.data.action);
@@ -22,6 +23,12 @@ export default class MessageTimelineInterface extends TimelineInterface {
       key =>
         void ElementWithTimelineInterfaceHandlerAndCloseFlow(action_data[key].element, key, action_data[key].data, this)
     );
+    const _this = this;
+    //@ts-ignore
+    this.element.querySelector('.tunkit_skip_timeline_interface').onclick = function () {
+      _this.hide();
+      _this.setPreventShow(true);
+    };
   }
   getElement() {
     return this.element;
@@ -53,6 +60,7 @@ export default class MessageTimelineInterface extends TimelineInterface {
     this.overlay.getElement().style.height = '0';
     this.element.style.left = '-100%';
     this.hideAction();
+    this.setPreventShow(false);
     this.is_showing = false;
   }
 }

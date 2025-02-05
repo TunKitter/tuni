@@ -594,8 +594,13 @@ details[open] details[open] > .tunkit_reference_note_item .content {
   box-shadow: none;
   background: none;
   padding: 0;
-  width: 40%;
-  height: 40%;
+  bottom: initial;
+  top: 0;
+  box-sizing: border-box;
+  width: 50%;
+  /* overflow: auto; */
+  word-wrap: break-word;
+  height: 100%;
 }
 .tunkit_flashcard_wrapper {
   width: 100%;
@@ -612,7 +617,7 @@ details[open] details[open] > .tunkit_reference_note_item .content {
 }
 
 .tunkit_flashcard_wrapper:hover .tunkit_flashcard_inner {
-  transform: rotateX(180deg);
+  transform: rotateY(180deg);
 }
 
 .tunkit_flashcard_front,
@@ -623,9 +628,10 @@ details[open] details[open] > .tunkit_reference_note_item .content {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   border-radius: 12px;
-  display: flex;
+  /* display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
+  /* overflow: auto; */
 }
 
 .tunkit_flashcard_front {
@@ -633,14 +639,18 @@ details[open] details[open] > .tunkit_reference_note_item .content {
   color: black;
   box-shadow: -4px 5px 14px 3px #ffffff5e;
   font-weight: bold;
+  overflow: auto;
+  padding: 10px 10px 0 10px;
 }
 
 .tunkit_flashcard_back {
-  transform: rotateX(180deg);
+  transform: rotateY(180deg);
   box-shadow: -4px 5px 14px 3px #333;
   background: #333;
   color: white;
   border-radius: 12px;
+  overflow: auto;
+  padding: 10px 0 0;
 }
 .tunkit_input_timeline_typing {
   border: none;
@@ -741,6 +751,7 @@ details[open] details[open] > .tunkit_reference_note_item .content {
   align-items: center;
   gap: 6px;
   color: white;
+  min-width: fit-content;
 }
 .tunkit_action_notification_interface {
   background: rgb(62 166 255 / 37%);
@@ -773,6 +784,8 @@ details[open] details[open] > .tunkit_reference_note_item .content {
   display: flex;
   align-items: center;
   gap: 2px;
+  max-width: 100%;
+  overflow: auto;
 }
 .tunkit_action_handler {
   left: initial;
@@ -897,4 +910,43 @@ details[open] details[open] > .tunkit_reference_note_item .content {
   margin-bottom: 2em;
   font-size: 0.6em;
   color: #d7d7d7;
+}
+.tunkit_timeline_interface.timeline_interface_message {
+  bottom: initial;
+  top: 0;
+  box-sizing: border-box;
+  width: 50%;
+  overflow: auto;
+  word-wrap: break-word;
+  height: 100%;
+  padding: 10px;
+  color: #a1a1a1;
+  font-size: 1.2em;
+  background: rgba(0, 0, 0, 0.29);
+  box-shadow: none;
+  backdrop-filter: blur(5px);
+  border-radius: 0;
+}
+.tunkit_badge_timeline_interface {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: 'DM Sans';
+  border: 1px solid white;
+  width: max-content;
+  padding: 5px 10px;
+  color: white;
+}
+.tunkit_timeline_message_interface_content {
+  font-family: 'YouTube Sans';
+  font-size: 1.5em;
+}
+.tunkit_skip_timeline_interface {
+  text-decoration: underline;
+  font-size: 1.2em;
+  color: white;
+}
+.tunkit_skip_timeline_interface:hover {
+  cursor: pointer;
+  opacity: 0.7;
 }
