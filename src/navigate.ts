@@ -1,5 +1,6 @@
 import { setCurrentTemplate, setCurrentTotalNotes, setDisableItems, showPanel } from './panels/panel';
 import { resetPanelScore } from './panels/panel_track';
+import { isForcePauseVideo } from './utils';
 import _ from './variables';
 import { activeTimelineInVideo } from './video';
 
@@ -21,6 +22,7 @@ export default function handleNavigate() {
     activeTimelineInVideo({ playing: 'remove', timeout: 'clear', video: 'remove' });
     resetPanelScore();
     _.MODE_DATA_PANEL.auto_pause.is_executed = false;
+    isForcePauseVideo(false);
   });
 }
 export function removeAllInteractionElements() {

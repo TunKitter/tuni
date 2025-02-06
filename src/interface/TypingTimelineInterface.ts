@@ -83,6 +83,8 @@ export default class TypingTimelineInterface extends TimelineInterface {
   }
 
   hide() {
+    (this.element.querySelector('.tunkit_input_timeline_typing') as HTMLInputElement).blur();
+    (this.element.querySelector('.tunkit_input_timeline_typing') as HTMLInputElement).value = '';
     if (_.VIDEO!.currentTime < this.data.startTime || _.VIDEO!.currentTime > this.data.endTime) {
       this.setPreventShow(false);
       isForcePauseVideo(false);
