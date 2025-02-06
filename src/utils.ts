@@ -55,6 +55,7 @@ export function getTimelineTextFormat(start: number, end: number) {
 }
 export function isForcePauseVideo(state: boolean, remain_time?: number) {
   _.VIDEO![state ? 'addEventListener' : 'removeEventListener']('playing', pauseVideo);
+  _.VIDEO!.muted = state;
   if (remain_time) _.VIDEO!.currentTime = remain_time;
 }
 function pauseVideo() {

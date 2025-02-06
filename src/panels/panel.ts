@@ -344,7 +344,10 @@ function handleCreatePointerTimeline() {
 export function getStateActiveTimelineInVideo() {
   const state = getActivePanel();
   const config = {} as any;
-  if (typeof _.CURRENT_TEMPLATE_ID == 'string') config.data_timeline = 'set';
+  if (typeof _.CURRENT_TEMPLATE_ID == 'string') {
+    removeAllInteractionElements();
+    config.data_timeline = 'set';
+  }
   config.playing = state && typeof _.CURRENT_TEMPLATE_ID == 'string' ? 'add' : 'remove';
   config.video = state && typeof _.CURRENT_TEMPLATE_ID == 'string' ? 'add' : 'remove';
   config.timeout = 'clear';

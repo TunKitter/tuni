@@ -11,6 +11,8 @@ export default class TypingTimelineInterface extends TimelineInterface {
   constructor(value: TimelineDataType) {
     super(value);
     this.element = getComponent('.tunkit_action_typing_interface', false);
+    //@ts-ignore
+    this.element.querySelector('.tunkit_question_typing_timeline').innerText = this.data.data.question;
     this.handleClickCancel();
     this.handleEventOnInput();
     this.handleClickSubmit();

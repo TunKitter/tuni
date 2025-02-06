@@ -660,7 +660,7 @@ details[open] details[open] > .tunkit_reference_note_item .content {
   outline: none;
 }
 .tunkit_button_typing {
-  width: 50% !important;
+  width: max-content;
   margin: auto !important;
   margin-top: 1em !important;
 }
@@ -669,8 +669,9 @@ details[open] details[open] > .tunkit_reference_note_item .content {
   color: white !important;
 }
 .tunkit_button_typing_cancel {
-  background: #333 !important;
-  color: white !important;
+  padding: 0 !important;
+  background: #656565 !important;
+  color: #ffffff !important;
 }
 
 .tunkit_gradient_button_copy_by_css_scan {
@@ -948,4 +949,15 @@ details[open] details[open] > .tunkit_reference_note_item .content {
 .tunkit_skip_timeline_interface:hover {
   cursor: pointer;
   opacity: 0.7;
+}
+.tunkit_action_typing_interface {
+  box-shadow: none;
+  bottom: 0;
+  width: 100%;
+  border-radius: 0;
+  box-sizing: border-box;
+}
+.tunkit_question_typing_timeline {
+  font-weight: bold;
+  margin-bottom: 1em;
 }
