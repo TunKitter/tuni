@@ -616,9 +616,9 @@ details[open] details[open] > .tunkit_reference_note_item .content {
   transform-style: preserve-3d;
 }
 
-.tunkit_flashcard_wrapper:hover .tunkit_flashcard_inner {
-  transform: rotateY(180deg);
-}
+/* .tunkit_flashcard_wrapper:hover .tunkit_flashcard_inner { */
+/* transform: rotateY(180deg); */
+/* } */
 
 .tunkit_flashcard_front,
 .tunkit_flashcard_back {
@@ -628,6 +628,10 @@ details[open] details[open] > .tunkit_reference_note_item .content {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   border-radius: 12px;
+  box-sizing: border-box;
+  border: 2px solid;
+  overflow: auto;
+  padding: 10px;
   /* display: flex;
   justify-content: center;
   align-items: center; */
@@ -635,22 +639,17 @@ details[open] details[open] > .tunkit_reference_note_item .content {
 }
 
 .tunkit_flashcard_front {
-  background: white;
-  color: black;
-  box-shadow: -4px 5px 14px 3px #ffffff5e;
+  color: white;
   font-weight: bold;
-  overflow: auto;
-  padding: 10px 10px 0 10px;
+  background: #00000033;
+  backdrop-filter: blur(10px);
 }
 
 .tunkit_flashcard_back {
   transform: rotateY(180deg);
-  box-shadow: -4px 5px 14px 3px #333;
-  background: #333;
+  background: #3333332b;
+  backdrop-filter: blur(10px);
   color: white;
-  border-radius: 12px;
-  overflow: auto;
-  padding: 10px 0 0;
 }
 .tunkit_input_timeline_typing {
   border: none;
@@ -802,11 +801,11 @@ details[open] details[open] > .tunkit_reference_note_item .content {
 }
 .tunkit_action_notification_handler {
   box-shadow: 0 0 0px 2px rgb(29 161 242 / 70%);
-  background: rgb(29 161 242 / 30%);
+  background: rgb(11, 33, 46);
 }
 .tunkit_action_jump_timeline_handler {
   box-shadow: 0 0 0px 2px #b1922e;
-  background: #473c1969;
+  background: rgb(71 60 25);
 }
 .tunkit_action_reference_handler {
   box-shadow: rgb(255 255 255 / 70%) 0px 0px 0px 2px;

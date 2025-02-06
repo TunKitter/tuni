@@ -23,12 +23,8 @@ export default class MessageTimelineInterface extends TimelineInterface {
       key =>
         void ElementWithTimelineInterfaceHandlerAndCloseFlow(action_data[key].element, key, action_data[key].data, this)
     );
-    const _this = this;
     //@ts-ignore
-    this.element.querySelector('.tunkit_skip_timeline_interface').onclick = function () {
-      _this.hide();
-      _this.setPreventShow(true);
-    };
+    this.handleSkipTimeline();
   }
   getElement() {
     return this.element;
@@ -62,5 +58,14 @@ export default class MessageTimelineInterface extends TimelineInterface {
     this.hideAction();
     this.setPreventShow(false);
     this.is_showing = false;
+  }
+  private handleSkipTimeline() {
+    const _this = this;
+    //@ts-ignore
+    this.element.querySelector('.tunkit_skip_timeline_interface').onclick = function () {
+      _this.hide();
+      _this.setPreventShow(true);
+      _.VIDEO!.play();
+    };
   }
 }

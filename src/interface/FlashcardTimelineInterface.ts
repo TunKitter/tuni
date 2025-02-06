@@ -13,8 +13,10 @@ export default class FlashcardTimelineInterface extends TimelineInterface {
   constructor(value: TimelineDataType) {
     super(value);
     this.element = getComponent('.tunkit_timeline_interface.tunkit_timeline_flashcard_interface', false);
-    this.element.querySelector('.tunkit_flashcard_front')!.textContent = this.data.data.front;
+    this.element.querySelector('.tunkit_flashcard_front_content')!.textContent = this.data.data.front;
     this.element.querySelector('.tunkit_flashcard_back')!.textContent = this.data.data.back;
+    this.handleFlipFlashcard();
+    this.handleSkipTimeline();
     this.overlay = getPlayerOverlay();
     this.action = getActionButtons();
     this.action.setActionData(this.data.action);
@@ -54,6 +56,32 @@ export default class FlashcardTimelineInterface extends TimelineInterface {
     this.overlay.getElement().style.height = '0';
     this.element.style.left = '-100%';
     this.hideAction();
+    this.setPreventShow(false);
+    //@ts-ignore
+    this.element.querySelector('.tunkit_flashcard_inner').style.transform = `rotateY(0deg)`;
     this.is_showing = false;
+  }
+  private handleFlipFlashcard() {
+    this.element.querySelector('.tunkit_flashcard_wrapper')?.addEventListener('click', () => {
+      //@ts-ignore
+      const rotate_deg = this.element
+        .querySelector('.tunkit_flashcard_inner')
+        //@ts-ignore
+        .style.transform.replace('rotateY(', '')
+        .replace('deg)', '');
+      //@ts-ignore
+      this.element.querySelector('.tunkit_flashcard_inner').style.transform = `rotateY(${
+        rotate_deg == '0' ? 180 : 0
+      }deg)`;
+    });
+  }
+  private handleSkipTimeline() {
+    const _this = this;
+    // @ts-ignore
+    this.element.querySelector('.tunkit_skip_timeline_interface').onclick = function () {
+      _this.hide();
+      _this.setPreventShow(true);
+      _.VIDEO!.play();
+    };
   }
 }
