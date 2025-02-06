@@ -961,3 +961,10 @@ details[open] details[open] > .tunkit_reference_note_item .content {
   font-weight: bold;
   margin-bottom: 1em;
 }
+.tunkit_badge_timeline_typing {
+  background: black;
+  transform: scale(0.7);
+  position: absolute;
+  right: 0;
+  top: 0;
+}
