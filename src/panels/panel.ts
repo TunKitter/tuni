@@ -6,6 +6,7 @@ import { ButtonAdderWithDialogActionFlow } from '../flows/button_adder_with_dial
 import { ButtonAdderWithPointerDialogActionFlow } from '../flows/button_adder_with_pointer_dialog';
 import { DialogWithOverlayFlow } from '../flows/dialog_with_overlay';
 import { InputTagSelectWithDialogFlow } from '../flows/input_tags_select_with_typing_dialog';
+import Tags from '../models/Tag';
 import Timeline from '../models/Timeline';
 import { removeAllInteractionElements } from '../navigate';
 import { ActionDataType, ActionTypingDataType, TimelineDataType } from '../types';
@@ -146,12 +147,13 @@ function handleCreateMessageTimeline() {
   };
   ButtonAdderWithDialogActionFlow(temp_action, message_timeline_dialog);
   message_timeline_dialog.render();
-  message_timeline_dialog.BASE.onClickSave(function () {
+  message_timeline_dialog.BASE.onClickSave(async function () {
+    const tags = await Tags.DATA.GET_TAGS_KEYS(message_timeline_dialog.BASE.INPUT_TAG.getData());
     const payload: TimelineDataType = {
       name: message_timeline_dialog.BASE.getName(),
       startTime: message_timeline_dialog.BASE.getStartTime(),
       endTime: message_timeline_dialog.BASE.getEndTime(),
-      tags: message_timeline_dialog.BASE.INPUT_TAG.getData(),
+      tags: tags,
       data: message_timeline_dialog.getDataTimeline(),
       action: temp_action,
       type: 'message',
@@ -198,12 +200,13 @@ function handleCreateFlashcardTimeline() {
   };
   ButtonAdderWithDialogActionFlow(temp_action, flashcard_timeline_dialog);
   flashcard_timeline_dialog.render();
-  flashcard_timeline_dialog.BASE.onClickSave(function () {
+  flashcard_timeline_dialog.BASE.onClickSave(async function () {
+    const tags = await Tags.DATA.GET_TAGS_KEYS(flashcard_timeline_dialog.BASE.INPUT_TAG.getData());
     const payload: TimelineDataType = {
       name: flashcard_timeline_dialog.BASE.getName(),
       startTime: flashcard_timeline_dialog.BASE.getStartTime(),
       endTime: flashcard_timeline_dialog.BASE.getEndTime(),
-      tags: flashcard_timeline_dialog.BASE.INPUT_TAG.getData(),
+      tags: tags,
       data: flashcard_timeline_dialog.getDataTimeline(),
       action: temp_action,
       type: 'flashcard',
@@ -248,18 +251,19 @@ function handleCreateTypingTimeline() {
   const temp_action = {} as { [key: string]: ActionTypingDataType };
   InputTagSelectWithDialogFlow(temp_action, typing_timeline_dialog);
   typing_timeline_dialog.render();
-  typing_timeline_dialog.BASE.onClickSave(function () {
+  typing_timeline_dialog.BASE.onClickSave(async function () {
     const id_otherwise = Object.keys(temp_action).find(e => temp_action[e].select_type == 'otherwise');
     if (!id_otherwise) {
       alert('It must have one "otherwise" action.');
       return;
     }
     temp_action[id_otherwise].include = [];
+    const tags = await Tags.DATA.GET_TAGS_KEYS(typing_timeline_dialog.BASE.INPUT_TAG.getData());
     const payload: TimelineDataType = {
       name: typing_timeline_dialog.BASE.getName(),
       startTime: typing_timeline_dialog.BASE.getStartTime(),
       endTime: typing_timeline_dialog.BASE.getEndTime(),
-      tags: typing_timeline_dialog.BASE.INPUT_TAG.getData(),
+      tags: tags,
       data: { question: typing_timeline_dialog.getDataTimeline() },
       action: temp_action,
       type: 'typing',
@@ -304,12 +308,13 @@ function handleCreatePointerTimeline() {
   const temp_action = {};
   ButtonAdderWithPointerDialogActionFlow(temp_action, pointer_timeline_dialog);
   pointer_timeline_dialog.render();
-  pointer_timeline_dialog.BASE.onClickSave(function () {
+  pointer_timeline_dialog.BASE.onClickSave(async function () {
+    const tags = await Tags.DATA.GET_TAGS_KEYS(pointer_timeline_dialog.BASE.INPUT_TAG.getData());
     const payload: TimelineDataType = {
       name: pointer_timeline_dialog.BASE.getName(),
       startTime: pointer_timeline_dialog.BASE.getStartTime(),
       endTime: pointer_timeline_dialog.BASE.getEndTime(),
-      tags: pointer_timeline_dialog.BASE.INPUT_TAG.getData(),
+      tags: tags,
       data: {},
       action: temp_action,
       type: 'pointer',

@@ -1,10 +1,12 @@
 import getInputTagsComponent from '../components/input_tags';
+import Tags from '../models/Tag';
 import { getComponent, HmsToSeconds, insertAdjacentElement, secondsToHms } from '../utils';
 import _ from '../variables';
 
 export function getBaseTimelineDialog() {
   const dialog = getComponent('.tunkit_timeline_note.base_timeline_dialog', false) as HTMLElement;
   const input_tags = getInputTagsComponent();
+  Tags.DATA.GET_ALL({ include_key: false }).then(data => input_tags.setAutoComplete(data));
   insertAdjacentElement(dialog, input_tags.getElement(), '.tunkit_base_info_wrapper');
   const input_name = dialog.querySelector('.tunkit_timeline_note_name')! as HTMLInputElement;
   const input_start_time = dialog.querySelector('.tunkit_input_time.time_start')! as HTMLInputElement;

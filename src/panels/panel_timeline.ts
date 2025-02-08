@@ -2,6 +2,7 @@ import { ButtonAdderWithDialogActionFlow } from '../flows/button_adder_with_dial
 import { ButtonAdderWithPointerDialogActionFlow } from '../flows/button_adder_with_pointer_dialog';
 import { DialogWithOverlayFlow } from '../flows/dialog_with_overlay';
 import { InputTagSelectWithDialogFlow } from '../flows/input_tags_select_with_typing_dialog';
+import Tags from '../models/Tag';
 import Timeline from '../models/Timeline';
 import { removeAllInteractionElements } from '../navigate';
 import { DialogTimelineTypeNavigator } from '../navigator/update_dialog_timeline_type_navigator';
@@ -94,14 +95,15 @@ function handleClickPointerTimeline(timeline_dialog: any, data_timeline: any) {
     };
   };
 }
-export function handleClickTimelineItemPanel(key: string, timeline_component: any) {
+export async function handleClickTimelineItemPanel(key: string, timeline_component: any) {
   const data_timeline = _.TIMELINE_NOTE[_.CURRENT_TEMPLATE_ID as string].timelineNotes[key];
   const timeline_dialog = DialogTimelineTypeNavigator(data_timeline.type)!;
   timeline_dialog.BASE.setTitle(`Update ${data_timeline.type} timeline`);
   timeline_dialog.BASE.setName(data_timeline.name);
   timeline_dialog.BASE.setStartTime(data_timeline.startTime);
   timeline_dialog.BASE.setEndTime(data_timeline.endTime);
-  timeline_dialog.BASE.INPUT_TAG.setData(data_timeline.tags);
+  const tags = await Tags.DATA.GET_TAGS_VALUES(data_timeline.tags);
+  timeline_dialog.BASE.INPUT_TAG.setData(tags);
   const dialog_flow = DialogWithOverlayFlow(timeline_dialog.BASE.getElement(), {
     close_selector: ['.tunkit_close_timeline'],
     overlay_z_index: 2201,
@@ -145,12 +147,13 @@ export function handleClickTimelineItemPanel(key: string, timeline_component: an
         });
     }
   });
-  timeline_dialog.BASE.onClickSave(function () {
+  timeline_dialog.BASE.onClickSave(async function () {
+    const tags = await Tags.DATA.GET_TAGS_KEYS(timeline_dialog.BASE.INPUT_TAG.getData());
     let pre_payload: TimelineDataType = {
       name: timeline_dialog.BASE.getName(),
       startTime: timeline_dialog.BASE.getStartTime(),
       endTime: timeline_dialog.BASE.getEndTime(),
-      tags: timeline_dialog.BASE.INPUT_TAG.getData(),
+      tags: tags,
       data: 'nothing',
       action: {},
       type: 'message',

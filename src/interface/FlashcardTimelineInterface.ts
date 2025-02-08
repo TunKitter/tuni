@@ -54,7 +54,7 @@ export default class FlashcardTimelineInterface extends TimelineInterface {
   }
   hide() {
     this.overlay.getElement().style.height = '0';
-    this.element.style.left = '-100%';
+    this.element.style.left = '-50%';
     this.hideAction();
     this.setPreventShow(false);
     //@ts-ignore
@@ -62,17 +62,11 @@ export default class FlashcardTimelineInterface extends TimelineInterface {
     this.is_showing = false;
   }
   private handleFlipFlashcard() {
+    let is_front = true;
+    const flashcard = this.element.querySelector('.tunkit_flashcard_inner') as HTMLElement;
     this.element.querySelector('.tunkit_flashcard_wrapper')?.addEventListener('click', () => {
-      //@ts-ignore
-      const rotate_deg = this.element
-        .querySelector('.tunkit_flashcard_inner')
-        //@ts-ignore
-        .style.transform.replace('rotateY(', '')
-        .replace('deg)', '');
-      //@ts-ignore
-      this.element.querySelector('.tunkit_flashcard_inner').style.transform = `rotateY(${
-        rotate_deg == '0' ? 180 : 0
-      }deg)`;
+      flashcard.style.transform = `rotateY(${is_front ? 180 : 0}deg)`;
+      is_front = !is_front;
     });
   }
   private handleSkipTimeline() {

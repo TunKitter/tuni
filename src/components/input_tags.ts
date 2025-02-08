@@ -22,6 +22,17 @@ export default function getInputTagsComponent() {
       arr = yourData;
     },
     getData: () => arr,
+    setAutoComplete: function (data: string[]) {
+      input_type_folder.setAttribute('list', 'folder_list');
+      const list = document.createElement('datalist');
+      list.id = 'folder_list';
+      inputTags.appendChild(list);
+      data.map(e => {
+        const option = document.createElement('option');
+        option.value = e;
+        inputTags!.querySelector('#folder_list')?.appendChild(option);
+      });
+    },
   };
 }
 function insertData(ul: HTMLUListElement, arr: string[], text: string) {

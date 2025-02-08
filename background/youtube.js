@@ -4,6 +4,9 @@ chrome.runtime.onMessage.addListener((message, sender, response) => {
     switch (message.type) {
       case 'GET_ALL_DATA': {
         const data = await chrome.storage.local.get();
+        Object.keys(data).forEach(key => {
+          if (!key.startsWith('yi_')) delete data[key];
+        });
         response(data);
         break;
       }
