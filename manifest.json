@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Tuni: Interactive for Youtube videosc",
+  "name": "Tuni: Interactive for Youtube videos",
   "description": "Learn,interact,take note with youtube videos and so more powerful features",
   "version": "1.0",
   "permissions": ["scripting", "storage"],
