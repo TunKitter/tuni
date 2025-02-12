@@ -8,8 +8,8 @@ export function insertToggleIconMenu() {
   const button = document.createElement('button');
   button.classList.add('ytp-button');
   button.id = 'tunkit_interactive_button';
-  button.innerHTML = `<img id="tunkit_svg" aria-pressed="false" class="ytp-svg-shadow" src="${_getURL(
-    'icons/panel_icon.svg'
+  button.innerHTML = `<img id="tunkit_svg" style="width:24px" aria-pressed="false" class="ytp-svg-shadow" src="${_getURL(
+    'logo/logo_128_black_white.png'
   )}"/>`;
   wrapper.insertAdjacentElement('afterend', button);
 }
@@ -18,8 +18,11 @@ export async function insertComponent() {
     .then(html => html.text())
     .then(function (html) {
       const url = _getURL('icons/');
-      // @ts-ignore
-      html = html.replaceAll(/{{icon\./g, url).replaceAll('}}', '.svg');
+      html = html
+        // @ts-ignore
+        .replaceAll(/{{icon\./g, url)
+        .replaceAll('}}', '.svg')
+        .replaceAll('__logo__', _getURL('logo/logo_128.png'));
       component_wrapper.innerHTML = html;
       initAfterInsertComponent();
     });

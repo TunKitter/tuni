@@ -1,12 +1,11 @@
 {
   "manifest_version": 3,
-  "name": "Interactive Youtube",
-  "description": "Learning,interact,take note with youtube video and so more powerful features",
+  "name": "Tuni: Interactive for Youtube videosc",
+  "description": "Learn,interact,take note with youtube videos and so more powerful features",
   "version": "1.0",
   "permissions": ["scripting", "storage"],
-  "options_ui": {
-    "page": "options.html",
-    "open_in_tab": true
+  "icons": {
+    "128": "./assets/logo/logo_128.png"
   },
   "host_permissions": ["https://www.youtube.com/watch?v=*"],
   "background": {
@@ -21,7 +20,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["/assets/icons/*", "/assets/static/bundle.html"],
+      "resources": ["/assets/icons/*", "/assets/logo/*", "/assets/static/bundle.html"],
       "matches": ["https://www.youtube.com/*"]
     }
   ]
