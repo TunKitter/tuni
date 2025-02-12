@@ -968,3 +968,7 @@ details[open] details[open] > .tunkit_reference_note_item .content {
   right: 0;
   top: 0;
 }
+.tunkit_error_validate_message {
+  color: #e1002d;
+  margin-top: 10px;
+}

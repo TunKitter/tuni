@@ -3,6 +3,7 @@ import Youtube from '../models/Youtube';
 import { handleShowPanel } from '../panels/panel';
 import { ActionType } from '../types';
 import { getComponent, HmsToSeconds, secondsToHms } from '../utils';
+import Validate from '../validate/validate_rule';
 import _ from '../variables';
 
 export function getUpdateActionDialog() {
@@ -13,6 +14,9 @@ export function getUpdateActionDialog() {
   renderReferenceAction().then(element => {
     detailAction.querySelector('.panel_action_reference_note')?.appendChild(element as HTMLElement);
   });
+  action_name.addEventListener('blur', () =>
+    new Validate(action_name, action_name.value).notEmpty().maxLen(100).validate()
+  );
   //@ts-ignore
   return {
     render() {
@@ -38,7 +42,11 @@ export function getUpdateActionDialog() {
       (detailAction!.querySelector('.tunkit_close_action_button')! as HTMLElement).onclick = () => callback();
     },
     onClickUpdate: function (callback: Function) {
-      (detailAction!.querySelector('.save_action_button')! as HTMLElement).onclick = () => callback();
+      (detailAction!.querySelector('.save_action_button')! as HTMLElement).onclick = () => {
+        if (!new Validate(action_name, action_name.value).notEmpty().maxLen(100).validate()) return;
+        if (!validateType(this.getType(), detailAction)) return;
+        callback();
+      };
     },
     onClickDelete: function (callback: Function) {
       (detailAction!.querySelector('.delete_action_button')! as HTMLElement).onclick = () => callback();
@@ -50,6 +58,31 @@ function handleChangeViewAction(detailAction: HTMLElement) {
     'change',
     function () {
       (detailAction.querySelector(`#tunkit_action_${this.value}_hidden`) as HTMLElement)?.click();
+    }
+  );
+  (detailAction.querySelector('.tunkit_action_notification_content') as HTMLTextAreaElement)?.addEventListener(
+    'blur',
+    function () {
+      new Validate(this, this.value).notEmpty().maxLen(5000).validate();
+    }
+  );
+  (detailAction.querySelector('.tunkit_action_jump_timeline_content') as HTMLInputElement).addEventListener(
+    'blur',
+    function () {
+      const _this = this;
+      new Validate(_this, _this.value)
+        .notEmpty()
+        .customValidate(function () {
+          const time = HmsToSeconds(_this.value);
+          if (isNaN(time)) throw new Error(`The time is invalid`);
+        })
+        .validate();
+    }
+  );
+  (detailAction.querySelector('.tunkit_jump_timeline_message') as HTMLTextAreaElement).addEventListener(
+    'blur',
+    function () {
+      new Validate(this, this.value).notEmpty().maxLen(5000).validate();
     }
   );
 }
@@ -81,9 +114,9 @@ function handleDataInteractiveData(type: ActionType, detailAction: HTMLElement, 
       if (typeof data === 'undefined') {
         const selected_element = getSelectedElement(detailAction);
         const return_data = {
-          timeline_id: selected_element.timeline_id.id,
-          template_id: selected_element.template_id.id,
-          youtube_id: selected_element.youtube_id.id,
+          timeline_id: selected_element!.timeline_id.id,
+          template_id: selected_element!.template_id.id,
+          youtube_id: selected_element!.youtube_id.id,
         };
         return return_data;
       } else {
@@ -95,8 +128,8 @@ function handleDataInteractiveData(type: ActionType, detailAction: HTMLElement, 
             if (checked_timeline) {
               checked_timeline.checked = true;
               const selected_element = getSelectedElement(detailAction);
-              selected_element.template_id.setAttribute('open', 'true');
-              selected_element.youtube_id.setAttribute('open', 'true');
+              selected_element!.template_id.setAttribute('open', 'true');
+              selected_element!.youtube_id.setAttribute('open', 'true');
             }
             clearTimeout(timeout_check);
           }
@@ -161,7 +194,7 @@ function renderReferenceAction() {
 }
 function getSelectedElement(detailAction: HTMLElement) {
   const timeline_id = detailAction.querySelector('input[type="radio"][name="reference_note"].tunkit_checkbox:checked');
-  if (timeline_id == null) throw new Error('Not found the selected timeline');
+  if (timeline_id == null) return void alert('Please choose a timeline note');
   const template_id = timeline_id!.parentElement!.parentElement!.parentElement!.parentElement;
   if (template_id == null || !template_id?.classList?.contains('tunkit_reference_note_template_item'))
     throw new Error('Not found the selected template');
@@ -173,4 +206,31 @@ function getSelectedElement(detailAction: HTMLElement) {
     template_id: template_id,
     youtube_id: youtube_id,
   };
+}
+function validateType(type: ActionType, detailAction: HTMLElement) {
+  switch (type) {
+    case 'notification': {
+      const input = detailAction.querySelector('.tunkit_action_notification_content') as HTMLInputElement;
+      return new Validate(input, input.value).notEmpty().maxLen(5000).validate();
+    }
+    case 'jump_timeline': {
+      const timeline_input = detailAction.querySelector('.tunkit_action_jump_timeline_content') as HTMLInputElement;
+      const timeline_message = detailAction.querySelector('.tunkit_jump_timeline_message') as HTMLTextAreaElement;
+      return (
+        new Validate(timeline_input, timeline_input.value)
+          .notEmpty()
+          .customValidate(function () {
+            const time = HmsToSeconds(timeline_input.value);
+            if (isNaN(time)) throw new Error(`The time is invalid`);
+          })
+          .validate() && new Validate(timeline_message, timeline_message.value).notEmpty().maxLen(5000).validate()
+      );
+    }
+    case 'reference_note':
+      return getSelectedElement(detailAction) ? true : false;
+    case 'mark_correct':
+    case 'mark_incorrect': {
+      return true;
+    }
+  }
 }

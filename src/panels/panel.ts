@@ -148,6 +148,7 @@ function handleCreateMessageTimeline() {
   ButtonAdderWithDialogActionFlow(temp_action, message_timeline_dialog);
   message_timeline_dialog.render();
   message_timeline_dialog.BASE.onClickSave(async function () {
+    if (!message_timeline_dialog.validateData()) return;
     const tags = await Tags.DATA.GET_TAGS_KEYS(message_timeline_dialog.BASE.INPUT_TAG.getData());
     const payload: TimelineDataType = {
       name: message_timeline_dialog.BASE.getName(),
@@ -201,6 +202,7 @@ function handleCreateFlashcardTimeline() {
   ButtonAdderWithDialogActionFlow(temp_action, flashcard_timeline_dialog);
   flashcard_timeline_dialog.render();
   flashcard_timeline_dialog.BASE.onClickSave(async function () {
+    if (!flashcard_timeline_dialog.validateData()) return;
     const tags = await Tags.DATA.GET_TAGS_KEYS(flashcard_timeline_dialog.BASE.INPUT_TAG.getData());
     const payload: TimelineDataType = {
       name: flashcard_timeline_dialog.BASE.getName(),
@@ -252,6 +254,7 @@ function handleCreateTypingTimeline() {
   InputTagSelectWithDialogFlow(temp_action, typing_timeline_dialog);
   typing_timeline_dialog.render();
   typing_timeline_dialog.BASE.onClickSave(async function () {
+    if (!typing_timeline_dialog.validateData()) return;
     const id_otherwise = Object.keys(temp_action).find(e => temp_action[e].select_type == 'otherwise');
     if (!id_otherwise) {
       alert('It must have one "otherwise" action.');
@@ -309,6 +312,7 @@ function handleCreatePointerTimeline() {
   ButtonAdderWithPointerDialogActionFlow(temp_action, pointer_timeline_dialog);
   pointer_timeline_dialog.render();
   pointer_timeline_dialog.BASE.onClickSave(async function () {
+    if (Object.keys(temp_action).length == 0) return void alert('It must have at least one action.');
     const tags = await Tags.DATA.GET_TAGS_KEYS(pointer_timeline_dialog.BASE.INPUT_TAG.getData());
     const payload: TimelineDataType = {
       name: pointer_timeline_dialog.BASE.getName(),

@@ -1,6 +1,7 @@
 import getInputTagsComponent from '../components/input_tags';
 import Tags from '../models/Tag';
 import { getComponent, HmsToSeconds, insertAdjacentElement, secondsToHms } from '../utils';
+import Validate from '../validate/validate_rule';
 import _ from '../variables';
 
 export function getBaseTimelineDialog() {
@@ -11,6 +12,9 @@ export function getBaseTimelineDialog() {
   const input_name = dialog.querySelector('.tunkit_timeline_note_name')! as HTMLInputElement;
   const input_start_time = dialog.querySelector('.tunkit_input_time.time_start')! as HTMLInputElement;
   const input_end_time = dialog.querySelector('.tunkit_input_time.time_end')! as HTMLInputElement;
+  handleValidateInputName(dialog, input_name);
+  handleValidateTime(dialog, input_start_time, input_end_time);
+
   return {
     render() {
       _.DIALOG_WRAPPER.appendChild(dialog);
@@ -37,11 +41,61 @@ export function getBaseTimelineDialog() {
     },
     onClickSave(callback: Function) {
       //@ts-ignore
-      dialog.querySelector('.tunkit_save_timeline_btn').onclick = () => callback();
+      dialog.querySelector('.tunkit_save_timeline_btn').onclick = () => {
+        if (
+          !(
+            validateInputName(dialog, input_name) &&
+            validateTime(dialog, input_start_time, input_end_time, input_start_time, 'Start') &&
+            validateTime(dialog, input_start_time, input_end_time, input_end_time, 'End')
+          )
+        )
+          return;
+        callback();
+      };
     },
     onClickDelete(callback: Function) {
       //@ts-ignore
       dialog.querySelector('.delete_timeline_button').onclick = () => callback();
     },
   };
+}
+function validateInputName(dialog: HTMLElement, input_name: HTMLInputElement) {
+  return new Validate(dialog.querySelector('.tunkit_base_info_wrapper')!, input_name.value)
+    .notEmpty()
+    .maxLen(100)
+    .validate();
+}
+function handleValidateInputName(dialog: HTMLElement, input_name: HTMLInputElement) {
+  input_name.addEventListener('blur', () => validateInputName(dialog, input_name));
+}
+function validateTime(
+  dialog: HTMLElement,
+  input_start_time: HTMLInputElement,
+  input_end_time: HTMLInputElement,
+  input_time: HTMLInputElement,
+  type: 'Start' | 'End'
+) {
+  return new Validate(dialog.querySelector('.tunkit_base_info_wrapper')!, input_time.value)
+    .customValidate(function () {
+      const start = HmsToSeconds(input_start_time.value);
+      const end = HmsToSeconds(input_end_time.value);
+      if (!(typeof start == 'number' && typeof end == 'number' && start < end)) {
+        let type_error = '';
+        if (isNaN(start)) type_error = 'Start';
+        if (isNaN(end)) type_error = 'End';
+        if (start > end) {
+          type_error = type;
+        }
+        throw new Error(`${type_error} time is invalid`);
+      }
+    })
+    .validate();
+}
+function handleValidateTime(dialog: HTMLElement, input_start_time: HTMLInputElement, input_end_time: HTMLInputElement) {
+  input_start_time.addEventListener('blur', () =>
+    validateTime(dialog, input_start_time, input_end_time, input_start_time, 'Start')
+  );
+  input_end_time.addEventListener('blur', () =>
+    validateTime(dialog, input_start_time, input_end_time, input_end_time, 'End')
+  );
 }

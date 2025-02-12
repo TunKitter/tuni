@@ -148,6 +148,11 @@ export async function handleClickTimelineItemPanel(key: string, timeline_compone
     }
   });
   timeline_dialog.BASE.onClickSave(async function () {
+    //@ts-ignore
+    if (!timeline_dialog.validateData()) return;
+    if (data_timeline.type == 'pointer' && Object.keys(data_return().action).length == 0)
+      return void alert('It must have at least one action.');
+
     const tags = await Tags.DATA.GET_TAGS_KEYS(timeline_dialog.BASE.INPUT_TAG.getData());
     let pre_payload: TimelineDataType = {
       name: timeline_dialog.BASE.getName(),

@@ -8,8 +8,8 @@ export default function getInputTagsComponent() {
   inputTags.addEventListener('click', () => input_type_folder.focus());
   input_type_folder!.addEventListener('keyup', function (e) {
     let inp_value = input_type_folder.value;
-    if (e.key === 'Enter' && inp_value.length > 0 && !arr.includes(inp_value)) {
-      arr.push(inp_value);
+    if (e.key === 'Enter' && inp_value.trim().length > 0 && !arr.includes(inp_value)) {
+      arr.push(inp_value.trim());
       insertData(list_folder, arr, inp_value);
       input_type_folder.value = '';
     }

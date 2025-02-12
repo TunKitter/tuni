@@ -13,5 +13,8 @@ export function getPointerTimelineDialog() {
     render() {
       base_timeline.render();
     },
+    validateData() {
+      return true;
+    },
   };
 }

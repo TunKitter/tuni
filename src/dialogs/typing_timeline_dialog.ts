@@ -1,5 +1,6 @@
 import { getInputTagsWithSelectComponent } from '../components/input_tags_with_select';
 import { getComponent, insertAdjacentElement } from '../utils';
+import Validate from '../validate/validate_rule';
 import { getBaseTimelineDialog } from './base_timeline_dialog';
 
 export function getTypingTimelineDialog() {
@@ -9,6 +10,9 @@ export function getTypingTimelineDialog() {
   const question_typing_input = typing_component.querySelector(
     '.tunkit_timeline_typing_card_question'
   ) as HTMLTextAreaElement;
+  question_typing_input.addEventListener('blur', () =>
+    new Validate(question_typing_input, question_typing_input.value).notEmpty().maxLen(100).validate()
+  );
   //@ts-ignore
   return {
     BASE: base_timeline,
@@ -20,6 +24,9 @@ export function getTypingTimelineDialog() {
     },
     setDataTimeline(value: string) {
       question_typing_input.value = value;
+    },
+    validateData() {
+      return new Validate(question_typing_input, question_typing_input.value).notEmpty().maxLen(100).validate();
     },
     onAddNewAnswerItem(callback: Function) {
       //@ts-ignore
