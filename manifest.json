@@ -3,7 +3,7 @@
   "name": "Tuni: Interactive for Youtube videos",
   "short_name": "Tuni",
   "description": "Learn,interact,take note with youtube videos and so more powerful features",
-  "version": "1.0",
+  "version": "1.1",
   "permissions": ["scripting", "storage"],
   "author": "tunkit",
   "icons": {
