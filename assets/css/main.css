@@ -161,6 +161,7 @@
   left: 341px;
   box-sizing: border-box;
   color: white;
+  background: #212121 !important;
   margin: 0;
   padding: 1em;
   cursor: pointer;

@@ -1,9 +1,11 @@
 {
   "manifest_version": 3,
   "name": "Tuni: Interactive for Youtube videos",
+  "short_name": "Tuni",
   "description": "Learn,interact,take note with youtube videos and so more powerful features",
   "version": "1.0",
   "permissions": ["scripting", "storage"],
+  "author": "tunkit",
   "icons": {
     "128": "./assets/logo/logo_128.png"
   },
